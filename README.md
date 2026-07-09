@@ -89,6 +89,19 @@ npm run build
 Genera un sitio estático en `dist/`, desplegable en cualquier hosting estático
 (Vercel, Netlify, GitHub Pages, etc.).
 
+### GitHub Pages
+
+El repositorio incluye `.github/workflows/deploy.yml`: en cada push a `main` ejecuta
+tests, build y publica `dist/` en GitHub Pages automáticamente.
+
+Para que el despliegue funcione hace falta activar Pages una sola vez en el
+repositorio: **Settings → Pages → Build and deployment → Source: "GitHub Actions"**.
+A partir de ahí, cada merge a `main` despliega solo.
+
+El sitio se publica como project page (`https://<usuario>.github.io/devdeck/`), por
+lo que `vite.config.js` fija `base: '/devdeck/'`. Si el repositorio cambia de nombre,
+ese valor debe actualizarse junto con él.
+
 ## Contribuir
 
 Proyecto personal — sin proceso de contribución externa por ahora.

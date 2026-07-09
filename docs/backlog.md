@@ -15,7 +15,7 @@ producto. Growth no vuelve a intervenir salvo pivote.
 (EN/ES). Catálogo de solo lectura en esta versión.
 **Versión actual:** 0.1.0 — scaffold 1.15.0
 **Estado:** En desarrollo (fase 0.y.z — sin garantías de estabilidad)
-**Entornos:** Ninguno desplegado (sitio estático sin build de producción publicado)
+**Entornos:** GitHub Pages, vía `.github/workflows/deploy.yml` (deploy automático en cada push a `main`; requiere activar Pages → Source: "GitHub Actions" una vez en Settings)
 
 ---
 
@@ -41,17 +41,19 @@ producto. Growth no vuelve a intervenir salvo pivote.
 - [ ] Ordenar tarjetas por fecha de última actividad o por estado.
 
 ### Baja prioridad / Exploración
-- [ ] Despliegue público del catálogo (GitHub Pages / Vercel).
 
 ---
 
 ## Decisiones Pendientes
 
-- [ ] ¿Se despliega DevDeck públicamente o se hace público el repositorio? — el Abogado ya dictaminó
-  ✅ para el estado actual (sin datos de terceros, sin PII), pero antes de publicar el repo el Jefe
-  debe advertir que `.claude/`, `CLAUDE.md` y `docs/` quedarían visibles en GitHub (regla de
-  Archivos Privados). El hallazgo de Seguridad sobre `isPublic` (filtro de presentación, no control
-  de acceso) ya está documentado en el README y en el copy de la UI — resuelto, no bloquea.
+- [x] ~~¿Se despliega DevDeck públicamente?~~ — resuelto: el usuario confirmó el despliegue a GitHub
+  Pages. El Abogado ya dictaminó ✅ para el estado actual (sin datos de terceros, sin PII). El
+  hallazgo de Seguridad sobre `isPublic` (filtro de presentación, no control de acceso) ya está
+  documentado en el README y en el copy de la UI.
+- [ ] ¿Se hace público el repositorio de GitHub (además del sitio desplegado)? — GitHub Pages vía
+  Actions solo publica el artefacto `dist/`, no el repositorio. Si además se hace público el repo,
+  el Jefe debe advertir que `.claude/`, `CLAUDE.md` y `docs/` quedarían visibles en GitHub (regla de
+  Archivos Privados).
 
 ---
 

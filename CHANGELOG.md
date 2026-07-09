@@ -18,6 +18,7 @@ y el proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Foco de teclado visible en los filtros y el selector de idioma
 - Suite de tests (Vitest + React Testing Library) que cubre filtrado, modo público, campos nulos, estado vacío, navegación por teclado y cambio de idioma
 - Decisión de arquitectura documentada en `docs/decisions/ADR-001-stack-y-i18n.md` (React + Vite sin backend, i18n propio)
+- Despliegue automático a GitHub Pages vía GitHub Actions (`.github/workflows/deploy.yml`) en cada push a `main`
 
 ### Changed
 
