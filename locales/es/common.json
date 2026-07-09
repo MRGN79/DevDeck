@@ -1,0 +1,32 @@
+{
+  "app": {
+    "title": "DevDeck",
+    "subtitle": "Tu catálogo personal de proyectos de desarrollo"
+  },
+  "filters": {
+    "publicMode": "Modo público",
+    "publicModeHint": "Mostrar solo proyectos públicos",
+    "statusLabel": "Estado",
+    "statusAll": "Todos"
+  },
+  "status": {
+    "active": "Activo",
+    "in-progress": "En progreso",
+    "paused": "Pausado",
+    "idea": "Idea"
+  },
+  "card": {
+    "version": "Versión",
+    "scaffold": "Scaffold",
+    "stack": "Stack",
+    "repo": "Repositorio",
+    "demo": "Demo",
+    "notAvailable": "No disponible",
+    "public": "Público",
+    "private": "Privado"
+  },
+  "empty": {
+    "title": "Ningún proyecto coincide con estos filtros",
+    "hint": "Prueba otro estado o desactiva el modo público"
+  }
+}

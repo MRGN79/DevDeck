@@ -1,0 +1,32 @@
+{
+  "app": {
+    "title": "DevDeck",
+    "subtitle": "Your personal development project catalog"
+  },
+  "filters": {
+    "publicMode": "Public mode",
+    "publicModeHint": "Show only public projects",
+    "statusLabel": "Status",
+    "statusAll": "All"
+  },
+  "status": {
+    "active": "Active",
+    "in-progress": "In progress",
+    "paused": "Paused",
+    "idea": "Idea"
+  },
+  "card": {
+    "version": "Version",
+    "scaffold": "Scaffold",
+    "stack": "Stack",
+    "repo": "Repository",
+    "demo": "Demo",
+    "notAvailable": "Not available",
+    "public": "Public",
+    "private": "Private"
+  },
+  "empty": {
+    "title": "No projects match these filters",
+    "hint": "Try a different status or turn off public mode"
+  }
+}
