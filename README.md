@@ -65,8 +65,20 @@ locales/
 ```
 
 Para añadir un proyecto al catálogo, añade un objeto a `src/data/projects.js` con los
-campos: `name`, `description`, `status` (`active` / `in-progress` / `paused` / `idea`),
-`version`, `scaffoldVersion`, `stack`, `repo`, `demo`, `isPublic`.
+campos: `id` (slug estable), `name`, `description`, `status` (`active` / `in-progress` /
+`paused` / `idea`), `version`, `scaffoldVersion`, `stack`, `repo`, `demo`, `isPublic`.
+
+## Sobre `isPublic` y el "Modo público" (importante)
+
+`isPublic: false` **no oculta ni protege los datos de un proyecto**: solo controla si su
+tarjeta se muestra cuando el "Modo público" está activado. Como DevDeck no tiene backend,
+todo el contenido de `src/data/projects.js` —incluidos los proyectos marcados como
+privados— se compila dentro del bundle JavaScript de `dist/` y es visible para cualquiera
+que inspeccione el sitio (código fuente, DevTools o el propio archivo servido).
+
+Por tanto, **no pongas en `src/data/projects.js` nada que no puedas publicar**: URLs de
+repos privados, notas internas, enlaces sensibles, etc. El "Modo público" es una comodidad
+de visualización, no un control de acceso.
 
 ## Desplegar
 

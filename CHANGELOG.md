@@ -14,10 +14,19 @@ y el proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Filtro por estado (`active` / `in-progress` / `paused` / `idea`)
 - Interfaz en inglés y castellano con selector de idioma
 - Tema oscuro por defecto
+- Texto de ayuda bajo el toggle "Modo público" que aclara que solo filtra la vista
+- Foco de teclado visible en los filtros y el selector de idioma
+- Suite de tests (Vitest + React Testing Library) que cubre filtrado, modo público, campos nulos, estado vacío, navegación por teclado y cambio de idioma
+- Decisión de arquitectura documentada en `docs/decisions/ADR-001-stack-y-i18n.md` (React + Vite sin backend, i18n propio)
 
 ### Changed
 
+- Cada proyecto incorpora un campo `id` estable (slug) como identificador
+
 ### Fixed
+
+- El `aria-label` del selector de idioma ahora se localiza mediante clave i18n
+- Color de superficie de las tarjetas unificado en una variable CSS
 
 ### Removed
 
