@@ -24,7 +24,7 @@ export default function App() {
           <h1>{t('app.title')}</h1>
           <p className="app-header__subtitle">{t('app.subtitle')}</p>
         </div>
-        <div className="locale-switcher" role="group" aria-label="Language">
+        <div className="locale-switcher" role="group" aria-label={t('app.languageLabel')}>
           <button
             type="button"
             className={locale === 'en' ? 'locale-switcher__active' : ''}

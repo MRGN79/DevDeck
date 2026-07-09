@@ -1,7 +1,8 @@
 {
   "app": {
     "title": "DevDeck",
-    "subtitle": "Tu catálogo personal de proyectos de desarrollo"
+    "subtitle": "Tu catálogo personal de proyectos de desarrollo",
+    "languageLabel": "Idioma"
   },
   "filters": {
     "publicMode": "Modo público",
