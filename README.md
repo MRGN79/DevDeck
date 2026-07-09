@@ -98,9 +98,10 @@ Para que el despliegue funcione hace falta activar Pages una sola vez en el
 repositorio: **Settings → Pages → Build and deployment → Source: "GitHub Actions"**.
 A partir de ahí, cada merge a `main` despliega solo.
 
-El sitio se publica como project page (`https://<usuario>.github.io/devdeck/`), por
-lo que `vite.config.js` fija `base: '/devdeck/'`. Si el repositorio cambia de nombre,
-ese valor debe actualizarse junto con él.
+El sitio se publica como project page (`https://mrgn79.github.io/DevDeck/`), en la
+misma capitalización exacta del nombre del repositorio — GitHub Pages la respeta tal
+cual, no la normaliza a minúsculas. Por eso `vite.config.js` fija `base: '/DevDeck/'`.
+Si el repositorio cambia de nombre, ese valor debe actualizarse junto con él.
 
 ## Contribuir
 
