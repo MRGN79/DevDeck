@@ -37,22 +37,28 @@ export const projects = [
   {
     id: 'terceroDePrimaria',
     name: 'TerceroDePrimaria',
-    description: 'Pendiente de descripción.',
+    description:
+      'Web de ejercicios y juegos educativos para 3º de primaria (8-9 años), 100% estática y sin backend.',
+    // status pendiente de confirmación del usuario — dato objetivo tomado de package.json:
+    // último commit 2026-07-09, actividad reciente, probablemente ya no es solo "idea".
     status: 'idea',
-    version: '0.0.0',
-    scaffoldVersion: null,
-    stack: [],
+    version: '0.3.0',
+    scaffoldVersion: '1.15.0',
+    stack: ['React', 'Vite', 'TypeScript'],
     repo: 'https://github.com/MRGN79/TerceroDePrimaria',
     demo: null,
   },
   {
     id: 'trailstats',
     name: 'TrailStats',
-    description: 'Pendiente de descripción.',
+    description:
+      'Analiza tu historial de exportaciones de Strava o Garmin localmente en el navegador — estadísticas y tendencias agregadas, sin backend, sin que el dato salga del dispositivo.',
+    // status pendiente de confirmación del usuario — dato objetivo tomado de package.json:
+    // último commit 2026-06-19, probablemente ya no es solo "idea".
     status: 'idea',
-    version: '0.0.0',
-    scaffoldVersion: null,
-    stack: [],
+    version: '0.12.0',
+    scaffoldVersion: '1.4.0',
+    stack: ['React', 'Vite', 'TypeScript', 'Recharts'],
     repo: 'https://github.com/MRGN79/TrailStats',
     demo: null,
   },

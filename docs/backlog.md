@@ -61,9 +61,14 @@ requiere activar Pages → Source: "GitHub Actions" una vez en Settings)
   usuario los facilitó, y de paso añadió TrailStats como quinto proyecto del catálogo. Los 5
   proyectos ya apuntan a su repo real (`MRGN79/SelfForge`, `MRGN79/fobforge`, `MRGN79/DevDeck`,
   `MRGN79/TerceroDePrimaria`, `MRGN79/TrailStats`).
-- [ ] Datos manuales de TerceroDePrimaria y TrailStats (`description`, `status`, `version`,
-  `stack`) — hoy son placeholder (`"Pendiente de descripción."`, `status: 'idea'`, `version:
-  '0.0.0'`, `stack: []`) para ambos.
+- [x] ~~Datos manuales de TerceroDePrimaria y TrailStats (`description`, `version`, `stack`)~~ —
+  resuelto: se leyeron directamente de su `package.json`/`.claude/scaffold.json` real (repos
+  clonados temporalmente en esta sesión). `description`, `version` y `scaffoldVersion` ya
+  reflejan el dato real.
+- [ ] `status` de TerceroDePrimaria y TrailStats sigue en `'idea'` — es un juicio del usuario, no
+  un dato objetivo, así que no se ha tocado. Señal de contexto: ambos tienen actividad reciente
+  (TerceroDePrimaria, commit del 2026-07-09; TrailStats, del 2026-06-19), probablemente ya no son
+  solo "idea".
 - [ ] Si algún repo (p.ej. FobForge) resulta estar en privado, hace falta decidir si se da de alta
   el secret `GH_STATS_TOKEN` (con permiso de lectura sobre ese repo) — requiere visto bueno de
   Seguridad y del Abogado antes de configurarlo, por el alcance de acceso que otorga.
