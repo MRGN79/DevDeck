@@ -28,7 +28,10 @@ export function Filters({ statusFilter, onStatusChange, publicOnly, onPublicOnly
       </div>
 
       <label className="public-toggle">
-        <span>{t('filters.publicMode')}</span>
+        <span className="public-toggle__text">
+          <span className="public-toggle__label">{t('filters.publicMode')}</span>
+          <span className="public-toggle__hint">{t('filters.publicModeHint')}</span>
+        </span>
         <input
           type="checkbox"
           role="switch"

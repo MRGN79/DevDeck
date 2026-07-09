@@ -122,6 +122,16 @@ body {
   color: var(--accent);
 }
 
+.filter-pill:focus-visible,
+.locale-switcher button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.locale-switcher button:focus-visible {
+  outline-offset: -2px;
+}
+
 .public-toggle {
   display: flex;
   align-items: center;
@@ -130,6 +140,22 @@ body {
   color: var(--text-muted);
   cursor: pointer;
   user-select: none;
+}
+
+.public-toggle__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.public-toggle__label {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.public-toggle__hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
 }
 
 .public-toggle input {
