@@ -23,9 +23,10 @@ producto. Growth no vuelve a intervenir salvo pivote.
 
 | Feature | Agente(s) activo(s) | Estado | Rama |
 |---|---|---|---|
-| Catálogo inicial de proyectos | Analista Funcional (specs retroactivas) | Documentación funcional completada; pendiente gates | claude/devdeck-project-catalog-el95gw |
+| Catálogo inicial de proyectos | — | Todos los gates aprobados (QA ✅, Accesibilidad ✅ AA, Responsabilidad Social ✅, Seguridad ✅, Abogado ✅); pendiente de confirmación del usuario para abrir PR y mergear | claude/devdeck-project-catalog-el95gw |
 
 > Specs y criterios de aceptación: `docs/acceptance-criteria.md` (en la rama de feature).
+> ADR: `docs/decisions/ADR-001-stack-y-i18n.md` (en la rama de feature).
 
 ---
 
@@ -46,22 +47,33 @@ producto. Growth no vuelve a intervenir salvo pivote.
 
 ## Decisiones Pendientes
 
-- [ ] ¿Se despliega DevDeck públicamente? — bloqueante para el gate del Abogado (exposición de
-  `.claude/`, `CLAUDE.md` y `docs/` si el repo se hace público) y para Seguridad (los proyectos con
-  `isPublic: false` viajan en el bundle del cliente: el "modo público" es un filtro de presentación,
-  no un control de acceso).
+- [ ] ¿Se despliega DevDeck públicamente o se hace público el repositorio? — el Abogado ya dictaminó
+  ✅ para el estado actual (sin datos de terceros, sin PII), pero antes de publicar el repo el Jefe
+  debe advertir que `.claude/`, `CLAUDE.md` y `docs/` quedarían visibles en GitHub (regla de
+  Archivos Privados). El hallazgo de Seguridad sobre `isPublic` (filtro de presentación, no control
+  de acceso) ya está documentado en el README y en el copy de la UI — resuelto, no bloquea.
 
 ---
 
 ## Deuda Técnica
 
-- [ ] Sin suite de tests automatizados — impacto: Medio.
-- [ ] `filters.publicModeHint` ("Show only public projects") definida en ambos locales pero no
-  renderizada en `Filters.jsx` — impacto: Bajo.
-- [ ] `card.stack` ("Stack") definida pero no usada (las etiquetas de stack se renderizan sin
-  encabezado) — impacto: Bajo.
-- [ ] `aria-label="Language"` del conmutador de idioma hardcodeado en inglés en `App.jsx`, no vía
-  clave i18n — impacto: Bajo (incumple la regla de "ningún string asistivo hardcodeado").
+- [x] ~~Sin suite de tests automatizados~~ — resuelto: 28 tests (Vitest + React Testing Library)
+  cubriendo los criterios de aceptación.
+- [x] ~~`aria-label="Language"` hardcodeado~~ — resuelto: localizado vía clave `app.languageLabel`.
+- [x] ~~Toggle "Modo público" no comunicaba su efecto~~ — resuelto: hint visible y aclarado que es
+  solo un filtro de presentación.
+- [ ] `card.stack` ("Stack") definida en i18n pero no usada como encabezado visible sobre las
+  etiquetas de stack — impacto: Bajo.
+- [ ] `description` de cada proyecto en `src/data/projects.js` está hardcodeada en castellano; en
+  modo EN la tarjeta mezcla interfaz en inglés con descripción en español — impacto: Bajo. Requiere
+  decisión: ¿traducir descripciones o aceptar que el contenido del catálogo no sigue el mismo
+  régimen i18n que la interfaz?
+- [ ] Enlaces deshabilitados de repo/demo son `<span>` sin `aria-disabled="true"` — impacto: Bajo,
+  mejora de claridad semántica (Accesibilidad).
+- [ ] Sin `prefers-reduced-motion` para las transiciones de hover de las tarjetas — impacto: Bajo.
+- [ ] 5 vulnerabilidades en devDependencies transitivas (cadena esbuild→vite→vitest, severidad
+  1 crítica/1 alta/3 moderate) — solo afectan al dev server local, no al build de producción. Fix
+  requiere `vite@8` / `vitest@3` (breaking) — necesita revisión del Arquitecto antes de actualizar.
 
 ---
 
@@ -75,4 +87,4 @@ _(sin hipótesis registradas — Growth 🔴, sin vía comercial)_
 
 | Feature | Versión | Fecha | Notas |
 |---|---|---|---|
-| _(sin features cerradas todavía)_ | — | — | El catálogo inicial sigue en Trabajo Activo hasta que pasen los gates y se cierre |
+| _(sin features cerradas todavía)_ | — | — | El catálogo inicial pasó todos los gates; sigue en Trabajo Activo hasta el merge — pendiente de confirmación del usuario para abrir PR |
