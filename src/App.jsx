@@ -27,6 +27,7 @@ export default function App() {
         <div className="locale-switcher" role="group" aria-label={t('app.languageLabel')}>
           <button
             type="button"
+            aria-pressed={locale === 'en'}
             className={locale === 'en' ? 'locale-switcher__active' : ''}
             onClick={() => setLocale('en')}
           >
@@ -34,6 +35,7 @@ export default function App() {
           </button>
           <button
             type="button"
+            aria-pressed={locale === 'es'}
             className={locale === 'es' ? 'locale-switcher__active' : ''}
             onClick={() => setLocale('es')}
           >
@@ -56,7 +58,7 @@ export default function App() {
           ))}
         </section>
       ) : (
-        <div className="empty-state">
+        <div className="empty-state" role="status">
           <p className="empty-state__title">{t('empty.title')}</p>
           <p className="empty-state__hint">{t('empty.hint')}</p>
         </div>

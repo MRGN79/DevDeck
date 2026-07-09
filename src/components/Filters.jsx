@@ -10,6 +10,7 @@ export function Filters({ statusFilter, onStatusChange, publicOnly, onPublicOnly
       <div className="filters__group" role="group" aria-label={t('filters.statusLabel')}>
         <button
           type="button"
+          aria-pressed={statusFilter === 'all'}
           className={`filter-pill ${statusFilter === 'all' ? 'filter-pill--active' : ''}`}
           onClick={() => onStatusChange('all')}
         >
@@ -19,6 +20,7 @@ export function Filters({ statusFilter, onStatusChange, publicOnly, onPublicOnly
           <button
             key={status}
             type="button"
+            aria-pressed={statusFilter === status}
             className={`filter-pill ${statusFilter === status ? 'filter-pill--active' : ''}`}
             onClick={() => onStatusChange(status)}
           >
