@@ -1,5 +1,6 @@
 export const projects = [
   {
+    id: 'selfforge',
     name: 'Selfforge',
     description:
       'Rastreador de hábitos personal con seguimiento de rachas, métricas de progreso y recordatorios diarios.',
@@ -12,6 +13,7 @@ export const projects = [
     isPublic: true,
   },
   {
+    id: 'fobforge',
     name: 'FobForge',
     description:
       'Herramienta de escritorio para leer, clonar y gestionar tags RFID del sistema domótico BTicino.',
@@ -24,6 +26,7 @@ export const projects = [
     isPublic: false,
   },
   {
+    id: 'devdeck',
     name: 'DevDeck',
     description: 'Catálogo personal de proyectos de desarrollo — esta misma aplicación.',
     status: 'in-progress',

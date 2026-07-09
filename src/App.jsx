@@ -52,7 +52,7 @@ export default function App() {
       {visibleProjects.length > 0 ? (
         <section className="project-grid">
           {visibleProjects.map((project) => (
-            <ProjectCard key={project.name} project={project} />
+            <ProjectCard key={project.id} project={project} />
           ))}
         </section>
       ) : (
