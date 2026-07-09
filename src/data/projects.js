@@ -1,0 +1,40 @@
+export const projects = [
+  {
+    id: 'selfforge',
+    name: 'Selfforge',
+    description:
+      'Rastreador de hábitos personal con seguimiento de rachas, métricas de progreso y recordatorios diarios.',
+    status: 'active',
+    version: '1.4.0',
+    scaffoldVersion: '1.12.0',
+    stack: ['React', 'Vite', 'Supabase'],
+    repo: null,
+    demo: null,
+    isPublic: true,
+  },
+  {
+    id: 'fobforge',
+    name: 'FobForge',
+    description:
+      'Herramienta de escritorio para leer, clonar y gestionar tags RFID del sistema domótico BTicino.',
+    status: 'paused',
+    version: '0.3.0',
+    scaffoldVersion: null,
+    stack: ['HTML', 'CSS', 'JavaScript'],
+    repo: null,
+    demo: null,
+    isPublic: false,
+  },
+  {
+    id: 'devdeck',
+    name: 'DevDeck',
+    description: 'Catálogo personal de proyectos de desarrollo — esta misma aplicación.',
+    status: 'in-progress',
+    version: '0.1.0',
+    scaffoldVersion: '1.15.0',
+    stack: ['React', 'Vite'],
+    repo: null,
+    demo: null,
+    isPublic: true,
+  },
+];
