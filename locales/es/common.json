@@ -6,7 +6,7 @@
   },
   "filters": {
     "publicMode": "Modo público",
-    "publicModeHint": "Mostrar solo proyectos públicos",
+    "publicModeHint": "Solo filtra la vista — los proyectos ocultos siguen en el código publicado",
     "statusLabel": "Estado",
     "statusAll": "Todos"
   },

@@ -6,7 +6,7 @@
   },
   "filters": {
     "publicMode": "Public mode",
-    "publicModeHint": "Show only public projects",
+    "publicModeHint": "Display filter only — hidden projects still ship in the built code",
     "statusLabel": "Status",
     "statusAll": "All"
   },
