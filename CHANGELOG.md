@@ -28,6 +28,9 @@ y el proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 - El `aria-label` del selector de idioma ahora se localiza mediante clave i18n
 - Color de superficie de las tarjetas unificado en una variable CSS
+- 404 en GitHub Pages: el `base` de Vite usaba minúsculas (`/devdeck/`) y no coincidía
+  con la capitalización real del repositorio (`/DevDeck/`), que GitHub Pages respeta
+  tal cual
 
 ### Removed
 
