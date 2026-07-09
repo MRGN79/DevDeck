@@ -53,6 +53,10 @@ Para tener visibilidad rápida del estado de cada uno sin abrir cada repositorio
   `localeCompare`) — independientemente del orden en que estén declaradas en `projects.js`.
   Decisión explícita del usuario: alfabético puro, sin agrupar por estado ni por actividad
   reciente (por ahora — puede revisitarse).
+- CA-1.6 — Dada la aplicación, cuando se renderiza, entonces muestra un pie de página
+  (`<footer>`, rol `contentinfo`) con la versión del manifiesto (`version` de `package.json`,
+  formato `DevDeck v<versión>`) y una descripción breve (`app.footerDescription`). La versión se
+  lee directamente de `package.json` — un solo origen de verdad, sin duplicar el número a mano.
 
 ---
 

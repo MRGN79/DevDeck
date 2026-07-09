@@ -364,3 +364,21 @@ body {
 .empty-state__hint {
   margin: 0;
 }
+
+.app-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  margin-top: 3rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.app-footer__version {
+  font-weight: 600;
+  color: var(--text);
+}
