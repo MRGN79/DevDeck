@@ -84,6 +84,10 @@ requiere activar Pages → Source: "GitHub Actions" una vez en Settings)
   régimen i18n que la interfaz?
 - [ ] Enlaces deshabilitados de repo/demo son `<span>` sin `aria-disabled="true"` — impacto: Bajo,
   mejora de claridad semántica (Accesibilidad).
+- [ ] El "Demo" por defecto (GitHub Pages derivada de `repo`) es una suposición sin verificar —
+  para FobForge, TerceroDePrimaria y TrailStats aún no se sabe si el Pages de ese repo existe.
+  Si da 404, corresponde poner `demo` explícito (a `null` para volver al enlace deshabilitado, o a
+  la URL real si está en otro sitio) — decisión del usuario, no del agente.
 - [ ] Sin `prefers-reduced-motion` para las transiciones de hover de las tarjetas — impacto: Bajo.
 - [ ] 5 vulnerabilidades en devDependencies transitivas (cadena esbuild→vite→vitest, severidad
   1 crítica/1 alta/3 moderate) — solo afectan al dev server local, no al build de producción. Fix

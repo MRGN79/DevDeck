@@ -6,6 +6,15 @@ export function parseGithubSlug(repoUrl) {
   return match ? `${match[1]}/${match[2]}` : null;
 }
 
+export function defaultGithubPagesUrl(repoUrl) {
+  const slug = parseGithubSlug(repoUrl);
+  if (!slug) return null;
+  const [owner, repo] = slug.split('/');
+  // GitHub Pages preserves the repo's exact case in the path, but hostnames
+  // are case-insensitive, so lowercasing the owner subdomain is safe.
+  return `https://${owner.toLowerCase()}.github.io/${repo}/`;
+}
+
 export function lastPageFromLinkHeader(linkHeader) {
   if (!linkHeader) return null;
   const lastLink = linkHeader.split(',').find((part) => part.includes('rel="last"'));

@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { parseGithubSlug, lastPageFromLinkHeader, buildStatsFromRepoResponse } from './github-stats-helpers.mjs';
+import {
+  parseGithubSlug,
+  defaultGithubPagesUrl,
+  lastPageFromLinkHeader,
+  buildStatsFromRepoResponse,
+} from './github-stats-helpers.mjs';
 
 describe('parseGithubSlug', () => {
   it('extracts owner/repo from a github.com URL', () => {
@@ -14,6 +19,25 @@ describe('parseGithubSlug', () => {
     expect(parseGithubSlug(null)).toBeNull();
     expect(parseGithubSlug('https://gitlab.com/foo/bar')).toBeNull();
     expect(parseGithubSlug('https://github.com/only-owner')).toBeNull();
+  });
+});
+
+describe('defaultGithubPagesUrl', () => {
+  it('builds a project-page URL preserving the repo\'s exact case', () => {
+    expect(defaultGithubPagesUrl('https://github.com/MRGN79/DevDeck')).toBe(
+      'https://mrgn79.github.io/DevDeck/',
+    );
+  });
+
+  it('lowercases the owner but not the repo name', () => {
+    expect(defaultGithubPagesUrl('https://github.com/MRGN79/fobforge')).toBe(
+      'https://mrgn79.github.io/fobforge/',
+    );
+  });
+
+  it('returns null for null or non-github URLs', () => {
+    expect(defaultGithubPagesUrl(null)).toBeNull();
+    expect(defaultGithubPagesUrl('https://gitlab.com/foo/bar')).toBeNull();
   });
 });
 

@@ -75,7 +75,22 @@ Para añadir un proyecto al catálogo, añade un objeto a `src/data/projects.js`
 campos: `id` (slug estable), `name`, `description`, `status` (`active` / `in-progress` /
 `paused` / `idea`), `version`, `scaffoldVersion`, `stack`, `repo`, `demo`. Si `repo` es una
 URL de GitHub (`https://github.com/<owner>/<repo>`), sus estadísticas se rellenan solas en
-el siguiente build — ver la siguiente sección.
+el siguiente build — ver la siguiente sección. `demo` también se rellena solo si lo dejas en
+`null` (ver "Enlace de demo" más abajo); pon un valor explícito solo si el proyecto está
+alojado en otro sitio.
+
+## Enlace de demo
+
+Por defecto, el enlace "Demo" de cada tarjeta apunta a la GitHub Pages del propio proyecto
+(`https://<owner>.github.io/<repo>/`, derivada de `repo`) — no hace falta rellenar `demo` a
+mano. Si un proyecto está desplegado en otro sitio (Vercel, Netlify, un dominio propio...),
+pon esa URL explícitamente en `demo` en `src/data/projects.js` y esa pasa a tener prioridad
+sobre el valor por defecto. Si `repo` es `null` o no es de GitHub y `demo` tampoco se rellena,
+el enlace se muestra deshabilitado como hasta ahora.
+
+Este valor por defecto es una suposición razonable, no una verificación: si el repo no tiene
+GitHub Pages activado, el enlace generado dará 404 hasta que actualices `demo` a mano o
+actives Pages en ese repo.
 
 ## Estadísticas de GitHub en vivo
 

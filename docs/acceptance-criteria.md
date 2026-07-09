@@ -110,7 +110,16 @@ Para conocer el detalle técnico de un proyecto de un vistazo
 - CA-4.4 — Dado un proyecto con `repo` no nulo, cuando se renderiza el enlace de repositorio,
   entonces es un `<a>` con `target="_blank"` y `rel="noreferrer"` que abre la URL; dado `repo:
   null`, entonces el enlace se muestra deshabilitado (`project-link--disabled`, sin navegación).
-- CA-4.5 — Igual que CA-4.4 aplicado al campo `demo`.
+- CA-4.5 — Igual que CA-4.4 aplicado al campo `demo` resuelto (ver CA-4.6/CA-4.7): enlace activo si
+  hay un valor, deshabilitado si no.
+- CA-4.6 — Dado un proyecto con `demo: null` en `projects.js` y `repo` apuntando a un
+  `https://github.com/<owner>/<repo>`, cuando se renderiza la tarjeta, entonces el enlace "Demo"
+  apunta por defecto a `https://<owner>.github.io/<repo>/` (owner en minúsculas, repo con su
+  capitalización exacta) — decisión explícita del usuario, sin verificar que ese Pages exista
+  realmente (puede dar 404 si el repo no lo tiene activado).
+- CA-4.7 — Dado un proyecto con `demo` explícito (no `null`) en `projects.js`, cuando se renderiza
+  su tarjeta, entonces ese valor tiene prioridad sobre el default de GitHub Pages, aunque `repo`
+  también apunte a GitHub.
 
 **Textos de interfaz (i18n)**
 
@@ -225,7 +234,8 @@ usuario), y datos de repos privados sin token configurado (`GH_STATS_TOKEN`, pen
 |---|---|---|---|
 | E-1 | `scaffoldVersion: null` (p.ej. FobForge) | Muestra "Not available" (`card.notAvailable`) | Cubierto (CA-4.2) |
 | E-2 | `repo: null` | Enlace de repo deshabilitado, sin navegación | Cubierto (CA-4.4) |
-| E-3 | `demo: null` | Enlace de demo deshabilitado, sin navegación | Cubierto (CA-4.5) |
+| E-3 | `demo: null` y `repo: null` (o no-GitHub) | Enlace de demo deshabilitado, sin navegación | Cubierto (CA-4.5) |
+| E-3b | `demo: null` y `repo` de GitHub | Enlace de demo apunta al default de GitHub Pages | Cubierto (CA-4.6) |
 | E-4 | Filtro que deja 0 proyectos (p.ej. estado `idea`, sin proyectos con ese estado) | Estado vacío visible | Cubierto (CA-6.1) |
 | E-6 | `stack` vacío `[]` | No se renderiza ninguna etiqueta; la tarjeta no rompe | A verificar por Tester (hoy ningún proyecto tiene stack vacío) |
 | E-7 | `name` duplicado entre proyectos | La `key` de React (`project.name`) colisiona → riesgo de render | A vigilar: la unicidad del nombre es un invariante implícito del modelo de datos |
