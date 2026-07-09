@@ -27,7 +27,7 @@ requiere activar Pages → Source: "GitHub Actions" una vez en Settings)
 | Feature | Agente(s) activo(s) | Estado | Rama |
 |---|---|---|---|
 | Eliminar modo público/privado | — | Código, tests y docs actualizados; pendiente de confirmación del usuario para abrir PR y mergear | revert/public-mode-toggle |
-| Estadísticas de GitHub en vivo + proyecto TerceroDePrimaria | — | Pipeline de fetch en build implementado y testeado; **bloqueado**: faltan los `repo` (owner/repo) de Selfforge, FobForge y TerceroDePrimaria, y los datos manuales (descripción, estado, versión, stack) de TerceroDePrimaria | feat/github-live-stats (creada sobre revert/public-mode-toggle, aún sin mergear) |
+| Estadísticas de GitHub en vivo + proyectos TerceroDePrimaria y TrailStats | — | Pipeline de fetch en build implementado, testeado, y los 5 `repo` ya configurados; pendiente de datos manuales de TerceroDePrimaria y TrailStats | feat/github-live-stats (creada sobre revert/public-mode-toggle, aún sin mergear) |
 
 > Specs y criterios de aceptación: `docs/acceptance-criteria.md`.
 > ADR: `docs/decisions/ADR-001-stack-y-i18n.md`, `docs/decisions/ADR-002-datos-github-en-build.md`.
@@ -56,13 +56,15 @@ requiere activar Pages → Source: "GitHub Actions" una vez en Settings)
   Actions solo publica el artefacto `dist/`, no el repositorio. Si además se hace público el repo,
   el Jefe debe advertir que `.claude/`, `CLAUDE.md` y `docs/` quedarían visibles en GitHub (regla de
   Archivos Privados).
-- [ ] `repo` (owner/repo de GitHub) de Selfforge, FobForge y TerceroDePrimaria — pendiente de que el
-  usuario los facilite. Sin ellos, esos tres proyectos no muestran estadísticas de GitHub (DevDeck
-  ya apunta a `MRGN79/DevDeck` y sí las mostrará).
-- [ ] Datos manuales de TerceroDePrimaria (`description`, `status`, `version`, `stack`) — hoy son
-  placeholder (`"Pendiente de descripción."`, `status: 'idea'`, `version: '0.0.0'`, `stack: []`).
-- [ ] Si FobForge resulta tener el repo de GitHub en privado, hace falta decidir si se da de alta el
-  secret `GH_STATS_TOKEN` (con permiso de lectura sobre ese repo) — requiere visto bueno de
+- [x] ~~`repo` (owner/repo de GitHub) de Selfforge, FobForge y TerceroDePrimaria~~ — resuelto: el
+  usuario los facilitó, y de paso añadió TrailStats como quinto proyecto del catálogo. Los 5
+  proyectos ya apuntan a su repo real (`MRGN79/SelfForge`, `MRGN79/fobforge`, `MRGN79/DevDeck`,
+  `MRGN79/TerceroDePrimaria`, `MRGN79/TrailStats`).
+- [ ] Datos manuales de TerceroDePrimaria y TrailStats (`description`, `status`, `version`,
+  `stack`) — hoy son placeholder (`"Pendiente de descripción."`, `status: 'idea'`, `version:
+  '0.0.0'`, `stack: []`) para ambos.
+- [ ] Si algún repo (p.ej. FobForge) resulta estar en privado, hace falta decidir si se da de alta
+  el secret `GH_STATS_TOKEN` (con permiso de lectura sobre ese repo) — requiere visto bueno de
   Seguridad y del Abogado antes de configurarlo, por el alcance de acceso que otorga.
 
 ---

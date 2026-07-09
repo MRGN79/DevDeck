@@ -19,7 +19,7 @@ y el proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Despliegue automático a GitHub Pages vía GitHub Actions (`.github/workflows/deploy.yml`) en cada push a `main`
 - Estadísticas de GitHub en vivo por tarjeta (estrellas, lenguaje, commits, colaboradores, issues abiertas, licencia, tamaño del repo, topics, última actualización), obtenidas en build time (`scripts/fetch-github-stats.mjs`) sin exponer llamadas a la API desde el navegador
 - Disparador `schedule` en el workflow de despliegue (cada 6 horas) para refrescar el sitio sin necesidad de un push
-- Proyecto TerceroDePrimaria añadido al catálogo (pendiente de datos reales)
+- Proyectos TerceroDePrimaria y TrailStats añadidos al catálogo (repo configurado, descripción/estado/versión/stack pendientes de datos reales)
 - Decisión de arquitectura documentada en `docs/decisions/ADR-002-datos-github-en-build.md` (fetch en build vs runtime, aproximación de "tamaño de repo" en vez de líneas de código reales)
 
 ### Changed

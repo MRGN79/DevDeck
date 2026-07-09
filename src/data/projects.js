@@ -8,7 +8,7 @@ export const projects = [
     version: '1.4.0',
     scaffoldVersion: '1.12.0',
     stack: ['React', 'Vite', 'Supabase'],
-    repo: null,
+    repo: 'https://github.com/MRGN79/SelfForge',
     demo: null,
   },
   {
@@ -20,7 +20,7 @@ export const projects = [
     version: '0.3.0',
     scaffoldVersion: null,
     stack: ['HTML', 'CSS', 'JavaScript'],
-    repo: null,
+    repo: 'https://github.com/MRGN79/fobforge',
     demo: null,
   },
   {
@@ -42,7 +42,18 @@ export const projects = [
     version: '0.0.0',
     scaffoldVersion: null,
     stack: [],
-    repo: null,
+    repo: 'https://github.com/MRGN79/TerceroDePrimaria',
+    demo: null,
+  },
+  {
+    id: 'trailstats',
+    name: 'TrailStats',
+    description: 'Pendiente de descripción.',
+    status: 'idea',
+    version: '0.0.0',
+    scaffoldVersion: null,
+    stack: [],
+    repo: 'https://github.com/MRGN79/TrailStats',
     demo: null,
   },
 ];
