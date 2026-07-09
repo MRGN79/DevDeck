@@ -9,7 +9,7 @@ y el proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Added
 
-- Catálogo de proyectos en grid de tarjetas, con datos estáticos en `src/data/projects.js`
+- Catálogo de proyectos en grid de tarjetas, con datos estáticos en `src/data/projects.js`, ordenadas alfabéticamente por nombre
 - Filtro por estado (`active` / `in-progress` / `paused` / `idea`)
 - Interfaz en inglés y castellano con selector de idioma
 - Tema oscuro por defecto

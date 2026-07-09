@@ -48,6 +48,11 @@ Para tener visibilidad rápida del estado de cada uno sin abrir cada repositorio
 - CA-1.4 (accesibilidad) — Dado que el usuario solo usa teclado, cuando navega la página, entonces
   puede alcanzar y activar todos los controles interactivos (filtros de estado, switch de idioma,
   enlaces activos de repo/demo) mediante Tab y Enter/Espacio, sin ratón.
+- CA-1.5 — Dado el catálogo, cuando se renderiza (con o sin filtro de estado aplicado), entonces
+  las tarjetas aparecen ordenadas alfabéticamente por `name` (case-insensitive,
+  `localeCompare`) — independientemente del orden en que estén declaradas en `projects.js`.
+  Decisión explícita del usuario: alfabético puro, sin agrupar por estado ni por actividad
+  reciente (por ahora — puede revisitarse).
 
 ---
 

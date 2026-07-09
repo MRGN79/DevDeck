@@ -25,10 +25,21 @@ const NO_IDEA_PROJECTS = ['active', 'paused', 'in-progress'].map((status) => ({
 }));
 
 describe('US-1 — Ver el catálogo', () => {
-  it('CA-1.1: sin filtros muestra una tarjeta por cada proyecto de projects.js', () => {
+  it('CA-1.1: sin filtros muestra una tarjeta por cada proyecto de projects.js, en orden alfabético', () => {
     renderWithI18n(<App />);
     expect(cards()).toHaveLength(projects.length);
-    expect(cardNames()).toEqual(projects.map((p) => p.name));
+    const expected = [...projects].map((p) => p.name).sort((a, b) => a.localeCompare(b));
+    expect(cardNames()).toEqual(expected);
+  });
+
+  it('CA-1.5: las tarjetas se ordenan alfabéticamente por nombre, no por orden de inserción', () => {
+    const shuffled = [
+      { id: 'z', name: 'Zeta', description: '', status: 'active', version: '1.0.0', scaffoldVersion: null, stack: [], repo: null, demo: null },
+      { id: 'a', name: 'Alpha', description: '', status: 'active', version: '1.0.0', scaffoldVersion: null, stack: [], repo: null, demo: null },
+      { id: 'm', name: 'Mid', description: '', status: 'active', version: '1.0.0', scaffoldVersion: null, stack: [], repo: null, demo: null },
+    ];
+    renderWithI18n(<App projects={shuffled} />);
+    expect(cardNames()).toEqual(['Alpha', 'Mid', 'Zeta']);
   });
 
   it('CA-1.3: la cabecera muestra title y subtitle (EN por defecto)', () => {
@@ -53,7 +64,10 @@ describe('US-2 — Filtrar por estado', () => {
     renderWithI18n(<App />);
     await user.click(screen.getByRole('button', { name: 'Active' }));
 
-    const expected = projects.filter((p) => p.status === 'active').map((p) => p.name);
+    const expected = projects
+      .filter((p) => p.status === 'active')
+      .map((p) => p.name)
+      .sort((a, b) => a.localeCompare(b));
     expect(cardNames()).toEqual(expected);
     expect(screen.getByRole('button', { name: 'Active' })).toHaveClass(
       'filter-pill--active',

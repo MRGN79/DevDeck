@@ -9,10 +9,12 @@ export default function App({ projects = catalogProjects } = {}) {
   const [statusFilter, setStatusFilter] = useState('all');
 
   const visibleProjects = useMemo(() => {
-    return projects.filter((project) => {
-      if (statusFilter !== 'all' && project.status !== statusFilter) return false;
-      return true;
-    });
+    return projects
+      .filter((project) => {
+        if (statusFilter !== 'all' && project.status !== statusFilter) return false;
+        return true;
+      })
+      .sort((a, b) => a.name.localeCompare(b.name));
   }, [statusFilter, projects]);
 
   return (
