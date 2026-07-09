@@ -13,13 +13,12 @@ const baseProject = {
   stack: ['React', 'Vite', 'TypeScript'],
   repo: 'https://example.test/repo',
   demo: 'https://example.test/demo',
-  isPublic: true,
 };
 
 const build = (overrides) => ({ ...baseProject, ...overrides });
 
 describe('US-4 — Metadatos de la tarjeta', () => {
-  it('CA-1.2/CA-4.1/CA-4.3: renderiza nombre, versión, scaffold, stack y píldora de visibilidad', () => {
+  it('CA-1.2/CA-4.1/CA-4.3: renderiza nombre, versión, scaffold y stack', () => {
     renderWithI18n(<ProjectCard project={build()} />);
     const card = screen.getByRole('article');
 
@@ -34,7 +33,6 @@ describe('US-4 — Metadatos de la tarjeta', () => {
     ['React', 'Vite', 'TypeScript'].forEach((tech) => {
       expect(within(card).getByText(tech)).toBeInTheDocument();
     });
-    expect(within(card).getByText('Public')).toBeInTheDocument();
   });
 
   it('CA-4.2/E-1: scaffoldVersion null muestra "Not available"', () => {
@@ -68,12 +66,6 @@ describe('US-4 — Metadatos de la tarjeta', () => {
     renderWithI18n(<ProjectCard project={build({ demo: null })} />);
     expect(screen.queryByRole('link', { name: 'Demo' })).not.toBeInTheDocument();
     expect(screen.getByText('Demo')).toHaveClass('project-link--disabled');
-  });
-
-  it('proyecto privado muestra la píldora "Private"', () => {
-    renderWithI18n(<ProjectCard project={build({ isPublic: false })} />);
-    expect(screen.getByText('Private')).toBeInTheDocument();
-    expect(screen.queryByText('Public')).not.toBeInTheDocument();
   });
 
   it('E-6: stack vacío no rompe la tarjeta y no renderiza etiquetas', () => {

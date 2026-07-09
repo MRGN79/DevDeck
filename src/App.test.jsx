@@ -62,56 +62,6 @@ describe('US-2 — Filtrar por estado', () => {
   });
 });
 
-describe('US-3 — Modo público', () => {
-  it('CA-3.1: por defecto el modo público está desactivado y se ven públicos y privados', () => {
-    renderWithI18n(<App />);
-    expect(screen.getByRole('switch')).not.toBeChecked();
-    expect(cards()).toHaveLength(projects.length);
-    // hay al menos un privado visible
-    expect(screen.getByText('Private')).toBeInTheDocument();
-  });
-
-  it('CA-3.2: activar el switch deja solo los proyectos isPublic:true', async () => {
-    const user = userEvent.setup();
-    renderWithI18n(<App />);
-    await user.click(screen.getByRole('switch'));
-
-    const expected = projects.filter((p) => p.isPublic).map((p) => p.name);
-    expect(cardNames()).toEqual(expected);
-    expect(screen.queryByText('Private')).not.toBeInTheDocument();
-  });
-
-  it('CA-3.3: desactivar el modo público vuelve a mostrar todos', async () => {
-    const user = userEvent.setup();
-    renderWithI18n(<App />);
-    const sw = screen.getByRole('switch');
-    await user.click(sw);
-    await user.click(sw);
-    expect(cards()).toHaveLength(projects.length);
-  });
-
-  it('CA-3.4: modo público + estado se combinan en AND lógico', async () => {
-    const user = userEvent.setup();
-    renderWithI18n(<App />);
-    await user.click(screen.getByRole('switch'));
-    await user.click(screen.getByRole('button', { name: 'Active' }));
-
-    const expected = projects
-      .filter((p) => p.isPublic && p.status === 'active')
-      .map((p) => p.name);
-    expect(cardNames()).toEqual(expected);
-  });
-
-  it('CA-3.5: el switch expone aria-checked reflejando su estado real', async () => {
-    const user = userEvent.setup();
-    renderWithI18n(<App />);
-    const sw = screen.getByRole('switch');
-    expect(sw).toHaveAttribute('aria-checked', 'false');
-    await user.click(sw);
-    expect(sw).toHaveAttribute('aria-checked', 'true');
-  });
-});
-
 describe('US-6 — Estado vacío', () => {
   it('CA-6.1: una combinación sin coincidencias oculta la grid y muestra el estado vacío', async () => {
     const user = userEvent.setup();
@@ -120,19 +70,7 @@ describe('US-6 — Estado vacío', () => {
     await user.click(screen.getByRole('button', { name: 'Idea' }));
     expect(cards()).toHaveLength(0);
     expect(screen.getByText('No projects match these filters')).toBeInTheDocument();
-    expect(
-      screen.getByText('Try a different status or turn off public mode'),
-    ).toBeInTheDocument();
-  });
-
-  it('CA-3.4/E-5: público + estado sin públicos de ese estado deja estado vacío', async () => {
-    const user = userEvent.setup();
-    renderWithI18n(<App />);
-    await user.click(screen.getByRole('switch'));
-    await user.click(screen.getByRole('button', { name: 'Paused' }));
-    // FobForge está pausado pero es privado -> 0 resultados
-    expect(cards()).toHaveLength(0);
-    expect(screen.getByText('No projects match these filters')).toBeInTheDocument();
+    expect(screen.getByText('Try a different status')).toBeInTheDocument();
   });
 
   it('CA-6.2: relajar los filtros hace reaparecer la grid', async () => {
@@ -171,8 +109,6 @@ describe('US-5 — Cambio de idioma EN/ES', () => {
     ).toBeInTheDocument();
     expect(screen.getByRole('group', { name: 'Estado' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Todos' })).toBeInTheDocument();
-    expect(screen.getAllByText('Público').length).toBeGreaterThan(0);
-    expect(screen.getByText('Privado')).toBeInTheDocument();
     // insignia de estado traducida (Selfforge = active): aparece en la píldora de
     // filtro y en la insignia de la tarjeta -> al menos una ocurrencia
     expect(screen.getAllByText('Activo').length).toBeGreaterThan(0);
@@ -186,30 +122,27 @@ describe('US-5 — Cambio de idioma EN/ES', () => {
     expect(
       screen.getByText('Ningún proyecto coincide con estos filtros'),
     ).toBeInTheDocument();
-    expect(
-      screen.getByText('Prueba otro estado o desactiva el modo público'),
-    ).toBeInTheDocument();
+    expect(screen.getByText('Prueba otro estado')).toBeInTheDocument();
     // no debe quedar ninguna clave i18n cruda visible
     expect(document.body.textContent).not.toMatch(/empty\.(title|hint)/);
   });
 });
 
 describe('CA-1.4 — navegación por teclado', () => {
-  it('los filtros, el switch y el conmutador de idioma son alcanzables y activables con teclado', async () => {
+  it('los filtros y el conmutador de idioma son alcanzables y activables con teclado', async () => {
     const user = userEvent.setup();
     renderWithI18n(<App />);
-
-    // el switch se activa con teclado (Espacio) al enfocarlo
-    const sw = screen.getByRole('switch');
-    sw.focus();
-    expect(sw).toHaveFocus();
-    await user.keyboard(' ');
-    expect(sw).toBeChecked();
 
     // una píldora de estado se activa con Enter
     const active = screen.getByRole('button', { name: 'Active' });
     active.focus();
     await user.keyboard('{Enter}');
     expect(active).toHaveClass('filter-pill--active');
+
+    // el conmutador de idioma es alcanzable y activable con teclado
+    const es = screen.getByRole('button', { name: 'ES' });
+    es.focus();
+    await user.keyboard('{Enter}');
+    expect(es).toHaveClass('locale-switcher__active');
   });
 });

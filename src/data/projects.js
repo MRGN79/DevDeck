@@ -10,7 +10,6 @@ export const projects = [
     stack: ['React', 'Vite', 'Supabase'],
     repo: null,
     demo: null,
-    isPublic: true,
   },
   {
     id: 'fobforge',
@@ -23,7 +22,6 @@ export const projects = [
     stack: ['HTML', 'CSS', 'JavaScript'],
     repo: null,
     demo: null,
-    isPublic: false,
   },
   {
     id: 'devdeck',
@@ -35,6 +33,5 @@ export const projects = [
     stack: ['React', 'Vite'],
     repo: null,
     demo: null,
-    isPublic: true,
   },
 ];

@@ -3,8 +3,7 @@
 ## ¿Qué es esto?
 
 DevDeck es un catálogo personal de proyectos de desarrollo. Muestra cada proyecto como
-una tarjeta con su estado, versión, stack tecnológico y enlaces, con un modo público que
-filtra solo los proyectos marcados como visibles y un filtro por estado.
+una tarjeta con su estado, versión, stack tecnológico y enlaces, con un filtro por estado.
 
 No tiene backend: todos los proyectos viven como datos estáticos en el propio código.
 
@@ -42,9 +41,8 @@ Abre `http://localhost:5173`.
 
 Suite de tests con [Vitest](https://vitest.dev) y
 [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
-(entorno jsdom). Cubre el filtrado por estado, el modo público y su combinación,
-el render de campos nulos, el estado vacío, la navegación por teclado y el cambio
-de idioma EN/ES.
+(entorno jsdom). Cubre el filtrado por estado, el render de campos nulos, el estado
+vacío, la navegación por teclado y el cambio de idioma EN/ES.
 
 ```bash
 npm test        # ejecuta la suite una vez
@@ -66,19 +64,14 @@ locales/
 
 Para añadir un proyecto al catálogo, añade un objeto a `src/data/projects.js` con los
 campos: `id` (slug estable), `name`, `description`, `status` (`active` / `in-progress` /
-`paused` / `idea`), `version`, `scaffoldVersion`, `stack`, `repo`, `demo`, `isPublic`.
+`paused` / `idea`), `version`, `scaffoldVersion`, `stack`, `repo`, `demo`.
 
-## Sobre `isPublic` y el "Modo público" (importante)
+## Aviso sobre datos sensibles (importante)
 
-`isPublic: false` **no oculta ni protege los datos de un proyecto**: solo controla si su
-tarjeta se muestra cuando el "Modo público" está activado. Como DevDeck no tiene backend,
-todo el contenido de `src/data/projects.js` —incluidos los proyectos marcados como
-privados— se compila dentro del bundle JavaScript de `dist/` y es visible para cualquiera
-que inspeccione el sitio (código fuente, DevTools o el propio archivo servido).
-
-Por tanto, **no pongas en `src/data/projects.js` nada que no puedas publicar**: URLs de
-repos privados, notas internas, enlaces sensibles, etc. El "Modo público" es una comodidad
-de visualización, no un control de acceso.
+DevDeck no tiene backend: todo el contenido de `src/data/projects.js` se compila dentro
+del bundle JavaScript de `dist/` y es visible para cualquiera que inspeccione el sitio
+desplegado (código fuente, DevTools o el propio archivo servido). No pongas ahí nada que
+no puedas publicar: URLs de repos privados, notas internas, enlaces sensibles, etc.
 
 ## Desplegar
 

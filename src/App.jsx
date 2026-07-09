@@ -7,15 +7,13 @@ import { Filters } from './components/Filters.jsx';
 export default function App() {
   const { t, locale, setLocale } = useI18n();
   const [statusFilter, setStatusFilter] = useState('all');
-  const [publicOnly, setPublicOnly] = useState(false);
 
   const visibleProjects = useMemo(() => {
     return projects.filter((project) => {
-      if (publicOnly && !project.isPublic) return false;
       if (statusFilter !== 'all' && project.status !== statusFilter) return false;
       return true;
     });
-  }, [statusFilter, publicOnly]);
+  }, [statusFilter]);
 
   return (
     <div className="app">
@@ -44,12 +42,7 @@ export default function App() {
         </div>
       </header>
 
-      <Filters
-        statusFilter={statusFilter}
-        onStatusChange={setStatusFilter}
-        publicOnly={publicOnly}
-        onPublicOnlyChange={setPublicOnly}
-      />
+      <Filters statusFilter={statusFilter} onStatusChange={setStatusFilter} />
 
       {visibleProjects.length > 0 ? (
         <section className="project-grid">

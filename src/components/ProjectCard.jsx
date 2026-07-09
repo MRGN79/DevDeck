@@ -3,15 +3,12 @@ import { StatusBadge } from './StatusBadge.jsx';
 
 export function ProjectCard({ project }) {
   const { t } = useI18n();
-  const { name, description, status, version, scaffoldVersion, stack, repo, demo, isPublic } = project;
+  const { name, description, status, version, scaffoldVersion, stack, repo, demo } = project;
 
   return (
     <article className="project-card">
       <header className="project-card__header">
         <h2 className="project-card__name">{name}</h2>
-        <span className={`visibility-pill visibility-pill--${isPublic ? 'public' : 'private'}`}>
-          {isPublic ? t('card.public') : t('card.private')}
-        </span>
       </header>
 
       <StatusBadge status={status} />

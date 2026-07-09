@@ -3,12 +3,11 @@
 ## Contexto del Proyecto
 
 **Qué es:** Catálogo personal de proyectos de desarrollo. Muestra estado, versión, stack, versión
-de scaffold y enlaces de cada proyecto en una cuadrícula de tarjetas, con filtro por estado y un
-modo público que oculta los proyectos no presentables.
-**Problema que resuelve:** Centraliza en una vista única qué proyectos personales existen, en qué
-estado están y cuáles son presentables a terceros.
-**Usuarios objetivo:** El propio desarrollador (uso personal). Potenciales visitantes externos solo
-si se despliega en modo público.
+de scaffold y enlaces de cada proyecto en una cuadrícula de tarjetas, con filtro por estado.
+**Problema que resuelve:** Centraliza en una vista única qué proyectos personales existen y en qué
+estado están.
+**Usuarios objetivo:** El propio desarrollador (uso personal). El sitio está desplegado públicamente
+en GitHub Pages, así que cualquier visitante puede verlo.
 **Potencial comercial:** 🔴 sin potencial (dictamen Growth consultor) — herramienta interna, no un
 producto. Growth no vuelve a intervenir salvo pivote.
 **Stack:** React 18 + Vite 5, sin backend. Datos estáticos en `src/data/projects.js`. i18n propio
@@ -23,10 +22,10 @@ producto. Growth no vuelve a intervenir salvo pivote.
 
 | Feature | Agente(s) activo(s) | Estado | Rama |
 |---|---|---|---|
-| Catálogo inicial de proyectos | — | Todos los gates aprobados (QA ✅, Accesibilidad ✅ AA, Responsabilidad Social ✅, Seguridad ✅, Abogado ✅); pendiente de confirmación del usuario para abrir PR y mergear | claude/devdeck-project-catalog-el95gw |
+| Eliminar modo público/privado | — | Código, tests y docs actualizados; pendiente de confirmación del usuario para abrir PR y mergear | revert/public-mode-toggle |
 
-> Specs y criterios de aceptación: `docs/acceptance-criteria.md` (en la rama de feature).
-> ADR: `docs/decisions/ADR-001-stack-y-i18n.md` (en la rama de feature).
+> Specs y criterios de aceptación: `docs/acceptance-criteria.md`.
+> ADR: `docs/decisions/ADR-001-stack-y-i18n.md`.
 
 ---
 
@@ -47,9 +46,7 @@ producto. Growth no vuelve a intervenir salvo pivote.
 ## Decisiones Pendientes
 
 - [x] ~~¿Se despliega DevDeck públicamente?~~ — resuelto: el usuario confirmó el despliegue a GitHub
-  Pages. El Abogado ya dictaminó ✅ para el estado actual (sin datos de terceros, sin PII). El
-  hallazgo de Seguridad sobre `isPublic` (filtro de presentación, no control de acceso) ya está
-  documentado en el README y en el copy de la UI.
+  Pages. El Abogado ya dictaminó ✅ para el estado actual (sin datos de terceros, sin PII).
 - [ ] ¿Se hace público el repositorio de GitHub (además del sitio desplegado)? — GitHub Pages vía
   Actions solo publica el artefacto `dist/`, no el repositorio. Si además se hace público el repo,
   el Jefe debe advertir que `.claude/`, `CLAUDE.md` y `docs/` quedarían visibles en GitHub (regla de
@@ -62,8 +59,8 @@ producto. Growth no vuelve a intervenir salvo pivote.
 - [x] ~~Sin suite de tests automatizados~~ — resuelto: 28 tests (Vitest + React Testing Library)
   cubriendo los criterios de aceptación.
 - [x] ~~`aria-label="Language"` hardcodeado~~ — resuelto: localizado vía clave `app.languageLabel`.
-- [x] ~~Toggle "Modo público" no comunicaba su efecto~~ — resuelto: hint visible y aclarado que es
-  solo un filtro de presentación.
+- [x] ~~Toggle "Modo público" no comunicaba su efecto~~ — obsoleto: el toggle se eliminó por completo
+  (no aportaba valor real). Si se recupera en el futuro, se documentará como feature nueva.
 - [ ] `card.stack` ("Stack") definida en i18n pero no usada como encabezado visible sobre las
   etiquetas de stack — impacto: Bajo.
 - [ ] `description` de cada proyecto en `src/data/projects.js` está hardcodeada en castellano; en

@@ -18,7 +18,11 @@ versión. Dictamen de Growth (consultor): 🔴 sin potencial comercial (herramie
 
 Cada proyecto del modelo de datos tiene: `name`, `description`, `status`
 (`active` | `in-progress` | `paused` | `idea`), `version`, `scaffoldVersion` (o `null`),
-`stack` (array de strings), `repo` (url o `null`), `demo` (url o `null`), `isPublic` (boolean).
+`stack` (array de strings), `repo` (url o `null`), `demo` (url o `null`).
+
+> **Nota (revert/public-mode-toggle):** el modo público/privado (`isPublic`, US-3 original)
+> se eliminó — no aportaba valor real y toda la sección correspondiente se ha retirado de
+> esta spec. Si se recupera en el futuro, se documentará como una nueva user story.
 
 ---
 
@@ -34,14 +38,14 @@ Para tener visibilidad rápida del estado de cada uno sin abrir cada repositorio
 
 - CA-1.1 — Dado el catálogo cargado, cuando abro la aplicación sin aplicar filtros, entonces se
   muestra una tarjeta por cada proyecto de `src/data/projects.js`.
-- CA-1.2 — Dada una tarjeta de proyecto, cuando se renderiza, entonces muestra: nombre, píldora de
-  visibilidad (público/privado), insignia de estado, descripción, versión, versión de scaffold,
-  etiquetas de stack y enlaces a repositorio y demo.
+- CA-1.2 — Dada una tarjeta de proyecto, cuando se renderiza, entonces muestra: nombre, insignia de
+  estado, descripción, versión, versión de scaffold, etiquetas de stack y enlaces a repositorio y
+  demo.
 - CA-1.3 — Dado el título de la aplicación, cuando se renderiza la cabecera, entonces muestra
   `app.title` ("DevDeck") y `app.subtitle` ("Your personal development project catalog").
 - CA-1.4 (accesibilidad) — Dado que el usuario solo usa teclado, cuando navega la página, entonces
-  puede alcanzar y activar todos los controles interactivos (filtros de estado, toggle de modo
-  público, switch de idioma, enlaces activos de repo/demo) mediante Tab y Enter/Espacio, sin ratón.
+  puede alcanzar y activar todos los controles interactivos (filtros de estado, switch de idioma,
+  enlaces activos de repo/demo) mediante Tab y Enter/Espacio, sin ratón.
 
 ---
 
@@ -76,38 +80,6 @@ Para centrarme solo en los proyectos activos, en progreso, pausados o en fase de
 | `status.in-progress` | "In progress" |
 | `status.paused` | "Paused" |
 | `status.idea` | "Idea" |
-
----
-
-## US-3 — Alternar el modo público
-
-```
-Como desarrollador que muestra su portfolio a terceros
-Quiero un modo público que oculte los proyectos no presentables
-Para enseñar la pantalla sin exponer proyectos privados
-```
-
-**Criterios de aceptación**
-
-- CA-3.1 — Dado el catálogo, cuando abro la aplicación, entonces el modo público está desactivado
-  por defecto y se muestran tanto proyectos públicos como privados.
-- CA-3.2 — Dado el modo público desactivado, cuando activo el switch `filters.publicMode`, entonces
-  solo se muestran los proyectos con `isPublic: true`.
-- CA-3.3 — Dado el modo público activo, cuando lo desactivo, entonces vuelven a mostrarse todos los
-  proyectos con independencia de su visibilidad.
-- CA-3.4 — Dados el modo público y el filtro de estado, cuando ambos están activos, entonces se
-  aplican en conjunción lógica (AND): solo proyectos públicos **y** del estado seleccionado.
-- CA-3.5 (accesibilidad) — Dado el switch de modo público, cuando lo interroga un lector de
-  pantalla, entonces expone `role="switch"` con `aria-checked` reflejando su estado real, y es
-  operable con teclado.
-
-**Textos de interfaz (i18n)**
-
-| Clave | Valor EN de referencia |
-|---|---|
-| `filters.publicMode` | "Public mode" |
-| `card.public` | "Public" |
-| `card.private` | "Private" |
 
 ---
 
@@ -177,17 +149,16 @@ Para entender que la lista está vacía por elección propia, no por un error
 
 - CA-6.1 — Dada una combinación de filtros que no deja ningún proyecto visible, cuando se recalcula
   la lista, entonces se oculta la cuadrícula y se muestra el estado vacío con `empty.title` ("No
-  projects match these filters") y `empty.hint` ("Try a different status or turn off public mode").
-- CA-6.2 — Dado el estado vacío, cuando relajo los filtros (cambio de estado o desactivo modo
-  público) hasta que vuelve a haber coincidencias, entonces la cuadrícula reaparece y el estado
-  vacío desaparece.
+  projects match these filters") y `empty.hint` ("Try a different status").
+- CA-6.2 — Dado el estado vacío, cuando relajo el filtro de estado hasta que vuelve a haber
+  coincidencias, entonces la cuadrícula reaparece y el estado vacío desaparece.
 
 **Textos de interfaz (i18n)**
 
 | Clave | Valor EN de referencia |
 |---|---|
 | `empty.title` | "No projects match these filters" |
-| `empty.hint` | "Try a different status or turn off public mode" |
+| `empty.hint` | "Try a different status" |
 
 ---
 
@@ -199,7 +170,6 @@ Para entender que la lista está vacía por elección propia, no por un error
 | E-2 | `repo: null` | Enlace de repo deshabilitado, sin navegación | Cubierto (CA-4.4) |
 | E-3 | `demo: null` | Enlace de demo deshabilitado, sin navegación | Cubierto (CA-4.5) |
 | E-4 | Filtro que deja 0 proyectos (p.ej. estado `idea`, sin proyectos con ese estado) | Estado vacío visible | Cubierto (CA-6.1) |
-| E-5 | Modo público + estado en conjunción que deja 0 públicos de ese estado | Estado vacío visible | Cubierto (CA-3.4 + CA-6.1) |
 | E-6 | `stack` vacío `[]` | No se renderiza ninguna etiqueta; la tarjeta no rompe | A verificar por Tester (hoy ningún proyecto tiene stack vacío) |
 | E-7 | `name` duplicado entre proyectos | La `key` de React (`project.name`) colisiona → riesgo de render | A vigilar: la unicidad del nombre es un invariante implícito del modelo de datos |
 | E-8 | URL de `repo`/`demo` malformada | El navegador intenta abrirla tal cual; no hay validación de formato | Aceptado — dato de confianza del propietario |
@@ -212,9 +182,7 @@ Para entender que la lista está vacía por elección propia, no por un error
   lectura sobre `projects.js`.
 - Búsqueda por nombre o stack.
 - Ordenación de tarjetas (por fecha, estado, etc.).
-- Despliegue público del catálogo.
-- Autenticación / control de acceso (el "modo público" es un filtro de presentación, **no** un
-  control de seguridad: los datos privados siguen presentes en el bundle del cliente).
+- Autenticación / control de acceso.
 
 ---
 
@@ -222,10 +190,9 @@ Para entender que la lista está vacía por elección propia, no por un error
 
 - **Rendimiento:** el filtrado es en memoria sobre un array pequeño (`useMemo`); no hay requisito de
   latencia crítico. Carga estática sin llamadas de red.
-- **Seguridad / privacidad:** el "modo público" **no** protege datos — todos los proyectos (incluidos
-  `isPublic: false`) viajan en el bundle JS servido al cliente. Si en el futuro se despliega
-  públicamente, no debe asumirse que los proyectos privados quedan ocultos a un usuario técnico.
-  Esto es input directo para el gate de Seguridad y del Abogado antes de cualquier despliegue público.
+- **Seguridad / privacidad:** sin backend, todo el contenido de `projects.js` viaja en el bundle JS
+  servido al cliente — no debe incluirse en él ningún dato que no pueda hacerse público. El sitio
+  ya está desplegado en GitHub Pages (`https://mrgn79.github.io/DevDeck/`).
 
 ---
 
@@ -254,15 +221,10 @@ eventos de negocio.
 
 ## Discrepancias i18n detectadas (para Frontend / Maquetador)
 
-Durante la verificación de las specs contra el código y los locales, se detectaron claves e
-inconsistencias menores que conviene resolver en una futura iteración de limpieza (`chore/`):
+Durante la verificación de las specs contra el código y los locales, se detectó una
+inconsistencia menor que conviene resolver en una futura iteración de limpieza (`chore/`):
 
-1. **`filters.publicModeHint`** ("Show only public projects") está definida en ambos locales pero
-   **no se renderiza** en `Filters.jsx`. O se muestra como texto de ayuda del switch, o se elimina.
-2. **`card.stack`** ("Stack") está definida pero **no se usa**: las etiquetas de stack se renderizan
+1. **`card.stack`** ("Stack") está definida pero **no se usa**: las etiquetas de stack se renderizan
    sin encabezado. O se añade la etiqueta, o se elimina la clave.
-3. **`aria-label="Language"`** del conmutador de idioma en `App.jsx` está **hardcodeado en inglés**,
-   no vía clave i18n — incumple la regla de "ningún string visible/asistivo hardcodeado". Debería
-   pasar a una clave (p.ej. `app.languageSwitcher`) con valores EN/ES.
 
-Estas tres no bloquean la aceptación de la feature, pero quedan registradas como deuda técnica.
+No bloquea la aceptación de la feature; queda registrada como deuda técnica (ver `docs/backlog.md`).

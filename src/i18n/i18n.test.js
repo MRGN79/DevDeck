@@ -33,7 +33,6 @@ describe('i18n — paridad de claves EN/ES', () => {
       'app.languageLabel',
       'filters.statusLabel',
       'filters.statusAll',
-      'filters.publicMode',
       'status.active',
       'status.in-progress',
       'status.paused',
@@ -43,8 +42,6 @@ describe('i18n — paridad de claves EN/ES', () => {
       'card.repo',
       'card.demo',
       'card.notAvailable',
-      'card.public',
-      'card.private',
       'empty.title',
       'empty.hint',
     ];
