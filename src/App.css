@@ -140,10 +140,16 @@ body {
 }
 
 .project-card {
+  --card-accent: var(--border);
+  --card-glow: none;
+
+  position: relative;
   background: var(--bg-elevated);
+  background-image: var(--card-glow);
   border: 1px solid var(--border);
+  border-top: 3px solid var(--card-accent);
   border-radius: 14px;
-  padding: 1.25rem;
+  padding: 1.15rem 1.25rem 1.25rem;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -152,7 +158,48 @@ body {
 
 .project-card:hover {
   border-color: var(--border-hover);
+  border-top-color: var(--card-accent);
   transform: translateY(-2px);
+}
+
+/*
+ * Cada bloque de abajo traduce la identidad visual REAL del proyecto
+ * (extraída de su propio CSS desplegado) a un acento + degradado sutil
+ * sobre la superficie oscura del catálogo — no reproduce su tema completo
+ * (algunos son claros), sino un eco reconocible del original.
+ * Proyecto sin bloque propio → fallback neutro de arriba, sin mantenimiento.
+ */
+
+.project-card[data-project="devdeck"] {
+  --card-accent: var(--accent);
+  --card-glow: radial-gradient(ellipse 80% 60% at 100% 0%, var(--accent-soft) 0%, transparent 65%);
+}
+
+.project-card[data-project="fobforge"] {
+  /* FobForge: negro casi puro + menta/teal técnico */
+  --card-accent: #00d4a0;
+  --card-glow: radial-gradient(ellipse 85% 65% at 100% 0%, rgba(0, 212, 160, 0.16) 0%, transparent 62%);
+}
+
+.project-card[data-project="selfforge"] {
+  /* Selfforge: paleta "forja" — carbón con óxido/ascua en las esquinas */
+  --card-accent: #f97316;
+  --card-glow: radial-gradient(ellipse 70% 55% at 0% 100%, rgba(180, 60, 12, 0.22) 0%, transparent 62%),
+    radial-gradient(ellipse 55% 50% at 100% 0%, rgba(150, 45, 10, 0.18) 0%, transparent 58%);
+}
+
+.project-card[data-project="terceroDePrimaria"] {
+  /* TerceroDePrimaria: "isla viva" — coral, sol y turquesa (base clara adaptada a eco sobre oscuro) */
+  --card-accent: #ff9e80;
+  --card-glow: radial-gradient(ellipse 65% 50% at 100% 0%, rgba(255, 216, 77, 0.16) 0%, transparent 60%),
+    radial-gradient(ellipse 55% 45% at 0% 100%, rgba(79, 209, 197, 0.16) 0%, transparent 58%);
+}
+
+.project-card[data-project="trailstats"] {
+  /* TrailStats: verde abeto + musgo con ascua naranja (trail running) */
+  --card-accent: #fc5200;
+  --card-glow: radial-gradient(ellipse 75% 60% at 0% 0%, rgba(63, 125, 90, 0.24) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 100% 100%, rgba(252, 82, 0, 0.14) 0%, transparent 55%);
 }
 
 .project-card__header {

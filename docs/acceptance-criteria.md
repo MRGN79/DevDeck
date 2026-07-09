@@ -228,6 +228,30 @@ usuario), y datos de repos privados sin token configurado (`GH_STATS_TOKEN`, pen
 
 ---
 
+## US-8 — Identidad visual por tarjeta
+
+```
+Como desarrollador que enseña su catálogo a terceros
+Quiero que cada tarjeta tenga un acento visual propio del proyecto real
+Para que el catálogo sea original y reconocible, no una plantilla genérica
+```
+
+**Criterios de aceptación**
+
+- CA-8.1 — Dada una tarjeta de un proyecto con tema definido (`devdeck`, `fobforge`, `selfforge`,
+  `terceroDePrimaria`, `trailstats`), cuando se renderiza, entonces expone `data-project="<id>"`
+  en el elemento raíz y el CSS aplica su acento (franja superior) y degradado de fondo propios,
+  extraídos a mano del CSS real desplegado de ese proyecto.
+- CA-8.2 — Dado un proyecto sin bloque de tema propio en `src/App.css`, cuando se renderiza su
+  tarjeta, entonces cae al estilo neutro por defecto (borde superior del color de borde estándar,
+  sin degradado) — no rompe el layout ni el contraste.
+
+**Fuera de alcance de esta US:** automatizar la extracción de paleta (es trabajo manual, ver
+`docs/decisions/ADR-003-identidad-visual-por-tarjeta.md`), y réplica fiel de temas claros dentro
+del catálogo oscuro (se traduce a un eco de color, no al tema original completo).
+
+---
+
 ## Casos edge identificados
 
 | # | Escenario | Comportamiento esperado | Estado |

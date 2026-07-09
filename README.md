@@ -121,6 +121,19 @@ Detalles a tener en cuenta:
 
 Para forzar un refresco manual en local: `npm run fetch-stats`.
 
+## Identidad visual por tarjeta
+
+Cada tarjeta lleva una franja superior y un degradado sutil de fondo con los colores reales
+del propio proyecto (no un tema genérico ni derivado de datos de GitHub) — un eco de su
+identidad visual real, sobre la base oscura del catálogo. Se define en `src/App.css` con
+selectores `.project-card[data-project="<id>"]` (el atributo `data-project` lo pone
+`ProjectCard.jsx` a partir de `project.id`).
+
+Añadir el tema de un proyecto nuevo es manual: hay que mirar su CSS/paleta reales y traducirlos
+a un acento + degradado. Un proyecto sin bloque propio cae automáticamente al estilo neutro por
+defecto — no rompe nada, simplemente no se distingue visualmente hasta que se le da su color.
+Detalle de la decisión y de qué proyectos ya tienen tema: `docs/decisions/ADR-003-identidad-visual-por-tarjeta.md`.
+
 ## Aviso sobre datos sensibles (importante)
 
 DevDeck no tiene backend: todo el contenido de `src/data/projects.js` se compila dentro

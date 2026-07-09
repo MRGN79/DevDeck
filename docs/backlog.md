@@ -28,9 +28,10 @@ requiere activar Pages → Source: "GitHub Actions" una vez en Settings)
 |---|---|---|---|
 | Eliminar modo público/privado | — | Código, tests y docs actualizados; pendiente de confirmación del usuario para abrir PR y mergear | revert/public-mode-toggle |
 | Estadísticas de GitHub en vivo + proyectos TerceroDePrimaria y TrailStats | — | Pipeline de fetch en build implementado, testeado, y los 5 `repo` ya configurados; pendiente de datos manuales de TerceroDePrimaria y TrailStats | feat/github-live-stats (creada sobre revert/public-mode-toggle, aún sin mergear) |
+| Identidad visual por tarjeta (fondo basado en el CSS real de cada proyecto) | — | Implementado y verificado visualmente para los 5 proyectos actuales; es trabajo manual por proyecto, no automático | feat/github-live-stats (mismo trabajo en curso) |
 
 > Specs y criterios de aceptación: `docs/acceptance-criteria.md`.
-> ADR: `docs/decisions/ADR-001-stack-y-i18n.md`, `docs/decisions/ADR-002-datos-github-en-build.md`.
+> ADR: `docs/decisions/ADR-001-stack-y-i18n.md`, `docs/decisions/ADR-002-datos-github-en-build.md`, `docs/decisions/ADR-003-identidad-visual-por-tarjeta.md`.
 
 ---
 
@@ -89,6 +90,14 @@ requiere activar Pages → Source: "GitHub Actions" una vez en Settings)
   Si da 404, corresponde poner `demo` explícito (a `null` para volver al enlace deshabilitado, o a
   la URL real si está en otro sitio) — decisión del usuario, no del agente.
 - [ ] Sin `prefers-reduced-motion` para las transiciones de hover de las tarjetas — impacto: Bajo.
+- [ ] El tema visual por tarjeta (`ADR-003`) es manual: cualquier proyecto nuevo que se añada al
+  catálogo cae al estilo neutro por defecto hasta que alguien revise su CSS real y le asigne un
+  bloque `[data-project="..."]` en `src/App.css`. No es un bug, es el trade-off aceptado de esta
+  decisión — pero conviene recordarlo al añadir proyectos.
+- [ ] Para TerceroDePrimaria, el acento de tarjeta es una interpretación de su paleta clara
+  ("isla viva") adaptada a la base oscura del catálogo, no una réplica fiel. Si el usuario prefiere
+  fidelidad total (p.ej. esa tarjeta con fondo claro), es una decisión de diseño mayor pendiente —
+  rompería la consistencia tonal del resto del catálogo.
 - [ ] 5 vulnerabilidades en devDependencies transitivas (cadena esbuild→vite→vitest, severidad
   1 crítica/1 alta/3 moderate) — solo afectan al dev server local, no al build de producción. Fix
   requiere `vite@8` / `vitest@3` (breaking) — necesita revisión del Arquitecto antes de actualizar.
