@@ -76,3 +76,55 @@ describe('US-4 — Metadatos de la tarjeta', () => {
     expect(within(card).getByText('DemoProject')).toBeInTheDocument();
   });
 });
+
+describe('US-7 — Estadísticas de GitHub', () => {
+  const github = {
+    stars: 42,
+    language: 'JavaScript',
+    commits: 128,
+    contributors: 2,
+    openIssues: 3,
+    license: 'MIT',
+    sizeKb: 512,
+    lastPushedAt: '2026-07-01T10:00:00Z',
+    topics: ['catalog', 'react'],
+  };
+
+  it('sin github, no renderiza la sección de estadísticas ni topics', () => {
+    renderWithI18n(<ProjectCard project={build({ github: null })} />);
+    expect(screen.queryByText('Stars')).not.toBeInTheDocument();
+    expect(screen.queryByText('GitHub stats')).not.toBeInTheDocument();
+  });
+
+  it('con github, renderiza estrellas, lenguaje, commits, colaboradores, issues, licencia, tamaño y fecha', () => {
+    renderWithI18n(<ProjectCard project={build({ github })} />);
+    expect(screen.getByText('Stars')).toBeInTheDocument();
+    expect(screen.getByText('42')).toBeInTheDocument();
+    expect(screen.getByText('Language')).toBeInTheDocument();
+    expect(screen.getByText('JavaScript')).toBeInTheDocument();
+    expect(screen.getByText('Commits')).toBeInTheDocument();
+    expect(screen.getByText('128')).toBeInTheDocument();
+    expect(screen.getByText('Contributors')).toBeInTheDocument();
+    expect(screen.getByText('Open issues')).toBeInTheDocument();
+    expect(screen.getByText('License')).toBeInTheDocument();
+    expect(screen.getByText('MIT')).toBeInTheDocument();
+    expect(screen.getByText('512 KB')).toBeInTheDocument();
+    expect(screen.getByText('2026-07-01')).toBeInTheDocument();
+  });
+
+  it('renderiza cada topic como etiqueta independiente', () => {
+    renderWithI18n(<ProjectCard project={build({ github })} />);
+    expect(screen.getByText('catalog')).toHaveClass('topic-tag');
+    expect(screen.getByText('react')).toHaveClass('topic-tag');
+  });
+
+  it('campos ausentes (null) no rompen el render y se omiten', () => {
+    renderWithI18n(
+      <ProjectCard
+        project={build({ github: { stars: 5, language: null, topics: [] } })}
+      />,
+    );
+    expect(screen.getByText('Stars')).toBeInTheDocument();
+    expect(screen.queryByText('Language')).not.toBeInTheDocument();
+  });
+});

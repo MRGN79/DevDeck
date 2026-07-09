@@ -16,9 +16,11 @@ DevDeck es un catálogo personal de proyectos de desarrollo (React 18 + Vite 5, 
 Los datos viven estáticos en `src/data/projects.js` — el catálogo es de **solo lectura** en esta
 versión. Dictamen de Growth (consultor): 🔴 sin potencial comercial (herramienta interna).
 
-Cada proyecto del modelo de datos tiene: `name`, `description`, `status`
-(`active` | `in-progress` | `paused` | `idea`), `version`, `scaffoldVersion` (o `null`),
-`stack` (array de strings), `repo` (url o `null`), `demo` (url o `null`).
+Cada proyecto del modelo de datos manual (`src/data/projects.js`) tiene: `name`, `description`,
+`status` (`active` | `in-progress` | `paused` | `idea`), `version`, `scaffoldVersion` (o `null`),
+`stack` (array de strings), `repo` (url de GitHub o `null`), `demo` (url o `null`). Cuando `repo`
+es una URL de GitHub, `src/data/mergedProjects.js` añade un campo `github` (objeto o `null`) con
+estadísticas obtenidas en build time — ver US-7.
 
 > **Nota (revert/public-mode-toggle):** el modo público/privado (`isPublic`, US-3 original)
 > se eliminó — no aportaba valor real y toda la sección correspondiente se ha retirado de
@@ -162,6 +164,56 @@ Para entender que la lista está vacía por elección propia, no por un error
 
 ---
 
+## US-7 — Consultar estadísticas de GitHub en vivo
+
+```
+Como desarrollador
+Quiero que cada tarjeta muestre datos de GitHub (estrellas, commits, lenguaje...)
+Para no tener que actualizarlos yo mismo cada vez que cambia algo en el proyecto
+```
+
+**Criterios de aceptación**
+
+- CA-7.1 — Dado un proyecto con `repo` apuntando a `https://github.com/<owner>/<repo>`, cuando
+  `npm run build` corre, entonces `scripts/fetch-github-stats.mjs` consulta la API de GitHub y
+  `src/data/github-stats.generated.json` incluye una entrada para ese `<owner>/<repo>`.
+- CA-7.2 — Dado un proyecto con estadísticas de GitHub disponibles, cuando se renderiza su tarjeta,
+  entonces muestra (cuando el dato existe): estrellas (`github.stars`), lenguaje principal
+  (`github.language`), nº de commits (`github.commits`), nº de colaboradores
+  (`github.contributors`), issues abiertas (`github.openIssues`), licencia (`github.license`),
+  tamaño del repo en KB (`github.size`), fecha del último push (`github.lastUpdate`) y sus topics
+  como etiquetas independientes.
+- CA-7.3 — Dado un proyecto con `repo: null` o con una URL que no es de GitHub, cuando se renderiza
+  su tarjeta, entonces no aparece la sección de estadísticas de GitHub ni la de topics.
+- CA-7.4 — Dado un campo individual de `github` ausente o `null` (p.ej. sin `license`), cuando se
+  renderiza la tarjeta, entonces esa etiqueta concreta se omite sin romper el resto de la sección.
+- CA-7.5 — Dado un fallo de red o de la API para un repo concreto durante el fetch, cuando
+  `fetch-github-stats.mjs` corre, entonces conserva el último dato bueno conocido de ese repo (si
+  lo había) y el build no falla por ello.
+- CA-7.6 — Dado el workflow de despliegue, cuando pasan 6 horas sin ningún push a `main`, entonces
+  el disparador `schedule` vuelve a ejecutar el build y republica el sitio con datos frescos.
+
+**Textos de interfaz (i18n)**
+
+| Clave | Valor EN de referencia |
+|---|---|
+| `github.sectionLabel` | "GitHub stats" |
+| `github.stars` | "Stars" |
+| `github.language` | "Language" |
+| `github.commits` | "Commits" |
+| `github.contributors` | "Contributors" |
+| `github.openIssues` | "Open issues" |
+| `github.license` | "License" |
+| `github.size` | "Repo size" |
+| `github.lastUpdate` | "Last update" |
+
+**Fuera de alcance de esta US:** líneas de código reales (se usa `size` en KB como aproximación,
+ver ADR-002), actualización en tiempo real al segundo (hasta 6h de desfase, asumido por el
+usuario), y datos de repos privados sin token configurado (`GH_STATS_TOKEN`, pendiente de decisión
+— ver `docs/backlog.md`).
+
+---
+
 ## Casos edge identificados
 
 | # | Escenario | Comportamiento esperado | Estado |
@@ -173,6 +225,9 @@ Para entender que la lista está vacía por elección propia, no por un error
 | E-6 | `stack` vacío `[]` | No se renderiza ninguna etiqueta; la tarjeta no rompe | A verificar por Tester (hoy ningún proyecto tiene stack vacío) |
 | E-7 | `name` duplicado entre proyectos | La `key` de React (`project.name`) colisiona → riesgo de render | A vigilar: la unicidad del nombre es un invariante implícito del modelo de datos |
 | E-8 | URL de `repo`/`demo` malformada | El navegador intenta abrirla tal cual; no hay validación de formato | Aceptado — dato de confianza del propietario |
+| E-9 | `repo` es una URL válida pero no de `github.com` (p.ej. GitLab) | No se intenta fetch; `github: null`, sin sección de estadísticas | Cubierto (CA-7.3, `parseGithubSlug` devuelve `null`) |
+| E-10 | Repo de GitHub privado o inexistente (404/403 al hacer fetch) | Se conserva el dato previo si lo había; si nunca se pudo obtener, `github: null` para ese proyecto | Cubierto (CA-7.5) |
+| E-11 | Licencia `NOASSERTION` (repo sin licencia declarada reconocida por GitHub) | Se trata como ausente (`license: null`), no se muestra la etiqueta | Cubierto (`buildStatsFromRepoResponse`) |
 
 ---
 
@@ -183,16 +238,23 @@ Para entender que la lista está vacía por elección propia, no por un error
 - Búsqueda por nombre o stack.
 - Ordenación de tarjetas (por fecha, estado, etc.).
 - Autenticación / control de acceso.
+- Fetch de datos de GitHub en el navegador del visitante (descartado por rate limiting — ver
+  ADR-002; se hace en build time).
+- Conteo real de líneas de código (descartado por requerir clonar cada repo — ver ADR-002; se usa
+  `size` en KB como aproximación).
 
 ---
 
 ## Requisitos no funcionales
 
-- **Rendimiento:** el filtrado es en memoria sobre un array pequeño (`useMemo`); no hay requisito de
-  latencia crítico. Carga estática sin llamadas de red.
-- **Seguridad / privacidad:** sin backend, todo el contenido de `projects.js` viaja en el bundle JS
-  servido al cliente — no debe incluirse en él ningún dato que no pueda hacerse público. El sitio
-  ya está desplegado en GitHub Pages (`https://mrgn79.github.io/DevDeck/`).
+- **Rendimiento:** el filtrado es en memoria sobre un array pequeño (`useMemo`). El navegador del
+  visitante nunca hace llamadas de red para obtener datos — las estadísticas de GitHub ya vienen
+  horneadas en el bundle desde el build.
+- **Seguridad / privacidad:** sin backend, todo el contenido de `projects.js` y de
+  `github-stats.generated.json` viaja en el bundle JS servido al cliente — no debe incluirse en él
+  ningún dato que no pueda hacerse público. El sitio ya está desplegado en GitHub Pages
+  (`https://mrgn79.github.io/DevDeck/`). El token `GH_STATS_TOKEN` (si se configura) vive solo como
+  secret de GitHub Actions, nunca en el bundle ni en el repositorio.
 
 ---
 
@@ -206,9 +268,12 @@ datos de usuarios. No aplica base jurídica RGPD art. 6 en esta versión.
 
 ## Dependencias
 
-- Modelo de datos estático `src/data/projects.js` como fuente de verdad.
+- Modelo de datos manual `src/data/projects.js` como fuente de verdad de los campos que GitHub no
+  puede darnos.
+- API REST de GitHub (`api.github.com`), consultada solo en build time por
+  `scripts/fetch-github-stats.mjs` — no en el navegador del visitante.
 - Solución i18n propia (`src/i18n/`) con locales `locales/en` y `locales/es`.
-- Ninguna dependencia de backend o red.
+- Ninguna dependencia de backend.
 
 ---
 

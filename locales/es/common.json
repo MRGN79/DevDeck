@@ -22,6 +22,17 @@
     "demo": "Demo",
     "notAvailable": "No disponible"
   },
+  "github": {
+    "sectionLabel": "Estadísticas de GitHub",
+    "stars": "Estrellas",
+    "language": "Lenguaje",
+    "commits": "Commits",
+    "contributors": "Colaboradores",
+    "openIssues": "Issues abiertas",
+    "license": "Licencia",
+    "size": "Tamaño del repo",
+    "lastUpdate": "Última actualización"
+  },
   "empty": {
     "title": "Ningún proyecto coincide con estos filtros",
     "hint": "Prueba otro estado"

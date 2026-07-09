@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react';
 import { useI18n } from './i18n/useI18n.js';
-import { projects } from './data/projects.js';
+import { projects as catalogProjects } from './data/mergedProjects.js';
 import { ProjectCard } from './components/ProjectCard.jsx';
 import { Filters } from './components/Filters.jsx';
 
-export default function App() {
+export default function App({ projects = catalogProjects } = {}) {
   const { t, locale, setLocale } = useI18n();
   const [statusFilter, setStatusFilter] = useState('all');
 
@@ -13,7 +13,7 @@ export default function App() {
       if (statusFilter !== 'all' && project.status !== statusFilter) return false;
       return true;
     });
-  }, [statusFilter]);
+  }, [statusFilter, projects]);
 
   return (
     <div className="app">

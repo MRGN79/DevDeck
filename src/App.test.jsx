@@ -9,6 +9,21 @@ const cards = () => screen.queryAllByRole('article');
 const cardNames = () =>
   screen.queryAllByRole('heading', { level: 2 }).map((h) => h.textContent);
 
+// Fixture sin proyectos en estado "idea", independiente del catálogo real —
+// garantiza que el filtro "Idea" deja el estado vacío sin importar qué
+// proyectos existan en src/data/projects.js.
+const NO_IDEA_PROJECTS = ['active', 'paused', 'in-progress'].map((status) => ({
+  id: status,
+  name: status,
+  description: '',
+  status,
+  version: '1.0.0',
+  scaffoldVersion: null,
+  stack: [],
+  repo: null,
+  demo: null,
+}));
+
 describe('US-1 — Ver el catálogo', () => {
   it('CA-1.1: sin filtros muestra una tarjeta por cada proyecto de projects.js', () => {
     renderWithI18n(<App />);
@@ -65,8 +80,7 @@ describe('US-2 — Filtrar por estado', () => {
 describe('US-6 — Estado vacío', () => {
   it('CA-6.1: una combinación sin coincidencias oculta la grid y muestra el estado vacío', async () => {
     const user = userEvent.setup();
-    renderWithI18n(<App />);
-    // ningún proyecto en estado "idea"
+    renderWithI18n(<App projects={NO_IDEA_PROJECTS} />);
     await user.click(screen.getByRole('button', { name: 'Idea' }));
     expect(cards()).toHaveLength(0);
     expect(screen.getByText('No projects match these filters')).toBeInTheDocument();
@@ -75,11 +89,11 @@ describe('US-6 — Estado vacío', () => {
 
   it('CA-6.2: relajar los filtros hace reaparecer la grid', async () => {
     const user = userEvent.setup();
-    renderWithI18n(<App />);
+    renderWithI18n(<App projects={NO_IDEA_PROJECTS} />);
     await user.click(screen.getByRole('button', { name: 'Idea' }));
     expect(cards()).toHaveLength(0);
     await user.click(screen.getByRole('button', { name: 'All' }));
-    expect(cards()).toHaveLength(projects.length);
+    expect(cards()).toHaveLength(NO_IDEA_PROJECTS.length);
     expect(
       screen.queryByText('No projects match these filters'),
     ).not.toBeInTheDocument();
@@ -116,7 +130,7 @@ describe('US-5 — Cambio de idioma EN/ES', () => {
 
   it('CA-5.3: el estado vacío también se traduce, sin claves sin resolver', async () => {
     const user = userEvent.setup();
-    renderWithI18n(<App />);
+    renderWithI18n(<App projects={NO_IDEA_PROJECTS} />);
     await user.click(screen.getByRole('button', { name: 'ES' }));
     await user.click(screen.getByRole('button', { name: 'Idea' }));
     expect(

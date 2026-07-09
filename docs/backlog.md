@@ -3,18 +3,22 @@
 ## Contexto del Proyecto
 
 **Qué es:** Catálogo personal de proyectos de desarrollo. Muestra estado, versión, stack, versión
-de scaffold y enlaces de cada proyecto en una cuadrícula de tarjetas, con filtro por estado.
-**Problema que resuelve:** Centraliza en una vista única qué proyectos personales existen y en qué
-estado están.
+de scaffold, enlaces y estadísticas de GitHub en vivo de cada proyecto en una cuadrícula de
+tarjetas, con filtro por estado.
+**Problema que resuelve:** Centraliza en una vista única qué proyectos personales existen, en qué
+estado están, y sus métricas de GitHub sin mantenimiento manual.
 **Usuarios objetivo:** El propio desarrollador (uso personal). El sitio está desplegado públicamente
 en GitHub Pages, así que cualquier visitante puede verlo.
 **Potencial comercial:** 🔴 sin potencial (dictamen Growth consultor) — herramienta interna, no un
 producto. Growth no vuelve a intervenir salvo pivote.
-**Stack:** React 18 + Vite 5, sin backend. Datos estáticos en `src/data/projects.js`. i18n propio
-(EN/ES). Catálogo de solo lectura en esta versión.
+**Stack:** React 18 + Vite 5, sin backend. Datos manuales estáticos en `src/data/projects.js`;
+estadísticas de GitHub obtenidas en build time (`scripts/fetch-github-stats.mjs`) y combinadas en
+`src/data/mergedProjects.js`. i18n propio (EN/ES). Catálogo de solo lectura en esta versión.
 **Versión actual:** 0.1.0 — scaffold 1.15.0
 **Estado:** En desarrollo (fase 0.y.z — sin garantías de estabilidad)
-**Entornos:** GitHub Pages, vía `.github/workflows/deploy.yml` (deploy automático en cada push a `main`; requiere activar Pages → Source: "GitHub Actions" una vez en Settings)
+**Entornos:** GitHub Pages, vía `.github/workflows/deploy.yml` (deploy automático en cada push a
+`main` y cada 6h por `schedule`, para refrescar las estadísticas de GitHub sin necesidad de push;
+requiere activar Pages → Source: "GitHub Actions" una vez en Settings)
 
 ---
 
@@ -23,9 +27,10 @@ producto. Growth no vuelve a intervenir salvo pivote.
 | Feature | Agente(s) activo(s) | Estado | Rama |
 |---|---|---|---|
 | Eliminar modo público/privado | — | Código, tests y docs actualizados; pendiente de confirmación del usuario para abrir PR y mergear | revert/public-mode-toggle |
+| Estadísticas de GitHub en vivo + proyecto TerceroDePrimaria | — | Pipeline de fetch en build implementado y testeado; **bloqueado**: faltan los `repo` (owner/repo) de Selfforge, FobForge y TerceroDePrimaria, y los datos manuales (descripción, estado, versión, stack) de TerceroDePrimaria | feat/github-live-stats (creada sobre revert/public-mode-toggle, aún sin mergear) |
 
 > Specs y criterios de aceptación: `docs/acceptance-criteria.md`.
-> ADR: `docs/decisions/ADR-001-stack-y-i18n.md`.
+> ADR: `docs/decisions/ADR-001-stack-y-i18n.md`, `docs/decisions/ADR-002-datos-github-en-build.md`.
 
 ---
 
@@ -51,6 +56,14 @@ producto. Growth no vuelve a intervenir salvo pivote.
   Actions solo publica el artefacto `dist/`, no el repositorio. Si además se hace público el repo,
   el Jefe debe advertir que `.claude/`, `CLAUDE.md` y `docs/` quedarían visibles en GitHub (regla de
   Archivos Privados).
+- [ ] `repo` (owner/repo de GitHub) de Selfforge, FobForge y TerceroDePrimaria — pendiente de que el
+  usuario los facilite. Sin ellos, esos tres proyectos no muestran estadísticas de GitHub (DevDeck
+  ya apunta a `MRGN79/DevDeck` y sí las mostrará).
+- [ ] Datos manuales de TerceroDePrimaria (`description`, `status`, `version`, `stack`) — hoy son
+  placeholder (`"Pendiente de descripción."`, `status: 'idea'`, `version: '0.0.0'`, `stack: []`).
+- [ ] Si FobForge resulta tener el repo de GitHub en privado, hace falta decidir si se da de alta el
+  secret `GH_STATS_TOKEN` (con permiso de lectura sobre ese repo) — requiere visto bueno de
+  Seguridad y del Abogado antes de configurarlo, por el alcance de acceso que otorga.
 
 ---
 

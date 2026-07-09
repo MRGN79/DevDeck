@@ -22,6 +22,17 @@
     "demo": "Demo",
     "notAvailable": "Not available"
   },
+  "github": {
+    "sectionLabel": "GitHub stats",
+    "stars": "Stars",
+    "language": "Language",
+    "commits": "Commits",
+    "contributors": "Contributors",
+    "openIssues": "Open issues",
+    "license": "License",
+    "size": "Repo size",
+    "lastUpdate": "Last update"
+  },
   "empty": {
     "title": "No projects match these filters",
     "hint": "Try a different status"

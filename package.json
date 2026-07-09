@@ -5,11 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prebuild": "node scripts/fetch-github-stats.mjs",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint .",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "fetch-stats": "node scripts/fetch-github-stats.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",
