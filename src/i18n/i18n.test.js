@@ -32,12 +32,6 @@ describe('i18n — paridad de claves EN/ES', () => {
       'app.subtitle',
       'app.languageLabel',
       'app.footerDescription',
-      'filters.statusLabel',
-      'filters.statusAll',
-      'status.active',
-      'status.in-progress',
-      'status.paused',
-      'status.idea',
       'card.version',
       'card.scaffold',
       'card.repo',
@@ -52,8 +46,6 @@ describe('i18n — paridad de claves EN/ES', () => {
       'github.license',
       'github.size',
       'github.lastUpdate',
-      'empty.title',
-      'empty.hint',
     ];
     for (const key of required) {
       expect(enKeys, `EN falta ${key}`).toContain(key);

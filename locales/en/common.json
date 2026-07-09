@@ -5,16 +5,6 @@
     "languageLabel": "Language",
     "footerDescription": "Built with React + Vite. GitHub stats refresh automatically."
   },
-  "filters": {
-    "statusLabel": "Status",
-    "statusAll": "All"
-  },
-  "status": {
-    "active": "Active",
-    "in-progress": "In progress",
-    "paused": "Paused",
-    "idea": "Idea"
-  },
   "card": {
     "version": "Version",
     "scaffold": "Scaffold",
@@ -33,9 +23,5 @@
     "license": "License",
     "size": "Repo size",
     "lastUpdate": "Last update"
-  },
-  "empty": {
-    "title": "No projects match these filters",
-    "hint": "Try a different status"
   }
 }

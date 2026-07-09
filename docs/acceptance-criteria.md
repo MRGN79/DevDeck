@@ -17,14 +17,19 @@ Los datos viven estáticos en `src/data/projects.js` — el catálogo es de **so
 versión. Dictamen de Growth (consultor): 🔴 sin potencial comercial (herramienta interna).
 
 Cada proyecto del modelo de datos manual (`src/data/projects.js`) tiene: `name`, `description`,
-`status` (`active` | `in-progress` | `paused` | `idea`), `version`, `scaffoldVersion` (o `null`),
-`stack` (array de strings), `repo` (url de GitHub o `null`), `demo` (url o `null`). Cuando `repo`
-es una URL de GitHub, `src/data/mergedProjects.js` añade un campo `github` (objeto o `null`) con
-estadísticas obtenidas en build time — ver US-7.
+`version`, `scaffoldVersion` (o `null`), `stack` (array de strings), `repo` (url de GitHub o
+`null`), `demo` (url o `null`). Cuando `repo` es una URL de GitHub, `src/data/mergedProjects.js`
+añade un campo `github` (objeto o `null`) con estadísticas obtenidas en build time — ver US-7.
 
 > **Nota (revert/public-mode-toggle):** el modo público/privado (`isPublic`, US-3 original)
 > se eliminó — no aportaba valor real y toda la sección correspondiente se ha retirado de
 > esta spec. Si se recupera en el futuro, se documentará como una nueva user story.
+>
+> **Nota (chore/remove-status-field):** el campo `status` (US-2 original, y la insignia de
+> estado de CA-1.2) se eliminó — decisión explícita del usuario ("no aporta nada"). Con él se
+> fue también el filtro por estado y el estado vacío (US-6 original), que dependían
+> exclusivamente de ese campo y dejaron de tener sentido sin él. Si se recupera `status` en el
+> futuro, esta spec deberá documentar de nuevo esas dos user stories.
 
 ---
 
@@ -38,59 +43,23 @@ Para tener visibilidad rápida del estado de cada uno sin abrir cada repositorio
 
 **Criterios de aceptación**
 
-- CA-1.1 — Dado el catálogo cargado, cuando abro la aplicación sin aplicar filtros, entonces se
-  muestra una tarjeta por cada proyecto de `src/data/projects.js`.
-- CA-1.2 — Dada una tarjeta de proyecto, cuando se renderiza, entonces muestra: nombre, insignia de
-  estado, descripción, versión, versión de scaffold, etiquetas de stack y enlaces a repositorio y
-  demo.
+- CA-1.1 — Dado el catálogo cargado, cuando abro la aplicación, entonces se muestra una tarjeta
+  por cada proyecto de `src/data/projects.js`. No hay filtros: se muestran siempre todos.
+- CA-1.2 — Dada una tarjeta de proyecto, cuando se renderiza, entonces muestra: nombre,
+  descripción, versión, versión de scaffold, etiquetas de stack y enlaces a repositorio y demo.
 - CA-1.3 — Dado el título de la aplicación, cuando se renderiza la cabecera, entonces muestra
   `app.title` ("DevDeck") y `app.subtitle` ("Your personal development project catalog").
 - CA-1.4 (accesibilidad) — Dado que el usuario solo usa teclado, cuando navega la página, entonces
-  puede alcanzar y activar todos los controles interactivos (filtros de estado, switch de idioma,
-  enlaces activos de repo/demo) mediante Tab y Enter/Espacio, sin ratón.
-- CA-1.5 — Dado el catálogo, cuando se renderiza (con o sin filtro de estado aplicado), entonces
-  las tarjetas aparecen ordenadas alfabéticamente por `name` (case-insensitive,
-  `localeCompare`) — independientemente del orden en que estén declaradas en `projects.js`.
-  Decisión explícita del usuario: alfabético puro, sin agrupar por estado ni por actividad
-  reciente (por ahora — puede revisitarse).
+  puede alcanzar y activar todos los controles interactivos (switch de idioma, enlaces activos de
+  repo/demo) mediante Tab y Enter/Espacio, sin ratón.
+- CA-1.5 — Dado el catálogo, cuando se renderiza, entonces las tarjetas aparecen ordenadas
+  alfabéticamente por `name` (case-insensitive, `localeCompare`) — independientemente del orden
+  en que estén declaradas en `projects.js`. Decisión explícita del usuario: alfabético puro, sin
+  agrupar por estado ni por actividad reciente (por ahora — puede revisitarse).
 - CA-1.6 — Dada la aplicación, cuando se renderiza, entonces muestra un pie de página
   (`<footer>`, rol `contentinfo`) con la versión del manifiesto (`version` de `package.json`,
   formato `DevDeck v<versión>`) y una descripción breve (`app.footerDescription`). La versión se
   lee directamente de `package.json` — un solo origen de verdad, sin duplicar el número a mano.
-
----
-
-## US-2 — Filtrar proyectos por estado
-
-```
-Como desarrollador
-Quiero filtrar las tarjetas por estado del proyecto
-Para centrarme solo en los proyectos activos, en progreso, pausados o en fase de idea
-```
-
-**Criterios de aceptación**
-
-- CA-2.1 — Dado el conjunto de proyectos, cuando abro la aplicación, entonces el filtro activo por
-  defecto es "All" (`filters.statusAll`) y se muestran todos los proyectos.
-- CA-2.2 — Dado el filtro en "All", cuando pulso una píldora de estado (`active`, `in-progress`,
-  `paused`, `idea`), entonces solo se muestran los proyectos cuyo `status` coincide y esa píldora
-  queda marcada como activa (`filter-pill--active`).
-- CA-2.3 — Dado un estado seleccionado, cuando pulso "All", entonces vuelven a mostrarse todos los
-  proyectos.
-- CA-2.4 (accesibilidad) — Dado el grupo de filtros de estado, cuando un lector de pantalla lo
-  recorre, entonces se anuncia como grupo etiquetado con `filters.statusLabel` ("Status")
-  (`role="group"` + `aria-label`).
-
-**Textos de interfaz (i18n)**
-
-| Clave | Valor EN de referencia |
-|---|---|
-| `filters.statusLabel` | "Status" |
-| `filters.statusAll` | "All" |
-| `status.active` | "Active" |
-| `status.in-progress` | "In progress" |
-| `status.paused` | "Paused" |
-| `status.idea` | "Idea" |
 
 ---
 
@@ -151,34 +120,8 @@ Para leer la interfaz en mi idioma preferido
   defecto es inglés (EN).
 - CA-5.2 — Dado el idioma EN, cuando pulso "ES" en el conmutador, entonces todos los textos visibles
   cambian a castellano (`locales/es/common.json`) y el botón ES queda marcado como activo.
-- CA-5.3 — Dado un cambio de idioma, cuando se reevalúa la interfaz, entonces las insignias de
-  estado, etiquetas de tarjeta, filtros y estado vacío se traducen de forma consistente sin claves
-  sin resolver visibles.
-
----
-
-## US-6 — Estado vacío tras filtrar
-
-```
-Como usuario
-Quiero un mensaje claro cuando ningún proyecto cumple los filtros
-Para entender que la lista está vacía por elección propia, no por un error
-```
-
-**Criterios de aceptación**
-
-- CA-6.1 — Dada una combinación de filtros que no deja ningún proyecto visible, cuando se recalcula
-  la lista, entonces se oculta la cuadrícula y se muestra el estado vacío con `empty.title` ("No
-  projects match these filters") y `empty.hint` ("Try a different status").
-- CA-6.2 — Dado el estado vacío, cuando relajo el filtro de estado hasta que vuelve a haber
-  coincidencias, entonces la cuadrícula reaparece y el estado vacío desaparece.
-
-**Textos de interfaz (i18n)**
-
-| Clave | Valor EN de referencia |
-|---|---|
-| `empty.title` | "No projects match these filters" |
-| `empty.hint` | "Try a different status" |
+- CA-5.3 — Dado un cambio de idioma, cuando se reevalúa la interfaz, entonces las etiquetas de
+  tarjeta y el pie de página se traducen de forma consistente sin claves sin resolver visibles.
 
 ---
 
@@ -264,7 +207,6 @@ del catálogo oscuro (se traduce a un eco de color, no al tema original completo
 | E-2 | `repo: null` | Enlace de repo deshabilitado, sin navegación | Cubierto (CA-4.4) |
 | E-3 | `demo: null` y `repo: null` (o no-GitHub) | Enlace de demo deshabilitado, sin navegación | Cubierto (CA-4.5) |
 | E-3b | `demo: null` y `repo` de GitHub | Enlace de demo apunta al default de GitHub Pages | Cubierto (CA-4.6) |
-| E-4 | Filtro que deja 0 proyectos (p.ej. estado `idea`, sin proyectos con ese estado) | Estado vacío visible | Cubierto (CA-6.1) |
 | E-6 | `stack` vacío `[]` | No se renderiza ninguna etiqueta; la tarjeta no rompe | A verificar por Tester (hoy ningún proyecto tiene stack vacío) |
 | E-7 | `name` duplicado entre proyectos | La `key` de React (`project.name`) colisiona → riesgo de render | A vigilar: la unicidad del nombre es un invariante implícito del modelo de datos |
 | E-8 | URL de `repo`/`demo` malformada | El navegador intenta abrirla tal cual; no hay validación de formato | Aceptado — dato de confianza del propietario |

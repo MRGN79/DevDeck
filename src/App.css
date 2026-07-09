@@ -11,15 +11,6 @@
   --accent-soft: rgba(124, 158, 255, 0.14);
   --surface-subtle: rgba(255, 255, 255, 0.05);
 
-  --status-active: #4ade80;
-  --status-active-bg: rgba(74, 222, 128, 0.14);
-  --status-in-progress: #fbbf24;
-  --status-in-progress-bg: rgba(251, 191, 36, 0.14);
-  --status-paused: #94a3b8;
-  --status-paused-bg: rgba(148, 163, 184, 0.14);
-  --status-idea: #c084fc;
-  --status-idea-bg: rgba(192, 132, 252, 0.14);
-
   font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
 
@@ -86,50 +77,8 @@ body {
   color: var(--accent) !important;
 }
 
-.filters {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-.filters__group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.filter-pill {
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  color: var(--text-muted);
-  padding: 0.45rem 0.9rem;
-  border-radius: 999px;
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: border-color 0.15s ease, color 0.15s ease;
-}
-
-.filter-pill:hover {
-  border-color: var(--border-hover);
-  color: var(--text);
-}
-
-.filter-pill--active {
-  background: var(--accent-soft);
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
-.filter-pill:focus-visible,
 .locale-switcher button:focus-visible {
   outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-.locale-switcher button:focus-visible {
   outline-offset: -2px;
 }
 
@@ -213,34 +162,6 @@ body {
   margin: 0;
   font-size: 1.15rem;
   letter-spacing: -0.01em;
-}
-
-.status-badge {
-  align-self: flex-start;
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 0.25rem 0.6rem;
-  border-radius: 999px;
-}
-
-.status-badge--active {
-  background: var(--status-active-bg);
-  color: var(--status-active);
-}
-
-.status-badge--in-progress {
-  background: var(--status-in-progress-bg);
-  color: var(--status-in-progress);
-}
-
-.status-badge--paused {
-  background: var(--status-paused-bg);
-  color: var(--status-paused);
-}
-
-.status-badge--idea {
-  background: var(--status-idea-bg);
-  color: var(--status-idea);
 }
 
 .project-card__description {
@@ -346,23 +267,6 @@ body {
   opacity: 0.5;
   cursor: default;
   text-decoration: none;
-}
-
-.empty-state {
-  text-align: center;
-  padding: 4rem 1rem;
-  color: var(--text-muted);
-}
-
-.empty-state__title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--text);
-  margin: 0 0 0.35rem;
-}
-
-.empty-state__hint {
-  margin: 0;
 }
 
 .app-footer {

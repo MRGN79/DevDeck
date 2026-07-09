@@ -1,22 +1,16 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useI18n } from './i18n/useI18n.js';
 import { projects as catalogProjects } from './data/mergedProjects.js';
 import { ProjectCard } from './components/ProjectCard.jsx';
-import { Filters } from './components/Filters.jsx';
 import { version } from '../package.json';
 
 export default function App({ projects = catalogProjects } = {}) {
   const { t, locale, setLocale } = useI18n();
-  const [statusFilter, setStatusFilter] = useState('all');
 
-  const visibleProjects = useMemo(() => {
-    return projects
-      .filter((project) => {
-        if (statusFilter !== 'all' && project.status !== statusFilter) return false;
-        return true;
-      })
-      .sort((a, b) => a.name.localeCompare(b.name));
-  }, [statusFilter, projects]);
+  const sortedProjects = useMemo(
+    () => [...projects].sort((a, b) => a.name.localeCompare(b.name)),
+    [projects],
+  );
 
   return (
     <div className="app">
@@ -45,20 +39,11 @@ export default function App({ projects = catalogProjects } = {}) {
         </div>
       </header>
 
-      <Filters statusFilter={statusFilter} onStatusChange={setStatusFilter} />
-
-      {visibleProjects.length > 0 ? (
-        <section className="project-grid">
-          {visibleProjects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
-          ))}
-        </section>
-      ) : (
-        <div className="empty-state" role="status">
-          <p className="empty-state__title">{t('empty.title')}</p>
-          <p className="empty-state__hint">{t('empty.hint')}</p>
-        </div>
-      )}
+      <section className="project-grid">
+        {sortedProjects.map((project) => (
+          <ProjectCard key={project.id} project={project} />
+        ))}
+      </section>
 
       <footer className="app-footer">
         <span className="app-footer__version">DevDeck v{version}</span>
