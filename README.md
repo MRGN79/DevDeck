@@ -40,7 +40,16 @@ Abre `http://localhost:5173`.
 
 ## Tests
 
-Este proyecto todavía no tiene suite de tests automatizados.
+Suite de tests con [Vitest](https://vitest.dev) y
+[React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
+(entorno jsdom). Cubre el filtrado por estado, el modo público y su combinación,
+el render de campos nulos, el estado vacío, la navegación por teclado y el cambio
+de idioma EN/ES.
+
+```bash
+npm test        # ejecuta la suite una vez
+npm run test:watch   # modo watch durante el desarrollo
+```
 
 ## Estructura del proyecto
 
