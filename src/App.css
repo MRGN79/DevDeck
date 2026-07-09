@@ -9,6 +9,7 @@
   --text-muted: #9498a6;
   --accent: #7c9eff;
   --accent-soft: rgba(124, 158, 255, 0.14);
+  --surface-subtle: rgba(255, 255, 255, 0.05);
 
   --status-active: #4ade80;
   --status-active-bg: rgba(74, 222, 128, 0.14);
@@ -318,7 +319,7 @@ body {
 }
 
 .stack-tag {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--surface-subtle);
   border: 1px solid var(--border);
   color: var(--text-muted);
   font-size: 0.75rem;
