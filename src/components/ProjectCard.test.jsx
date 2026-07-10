@@ -17,6 +17,13 @@ const baseProject = {
 
 const build = (overrides) => ({ ...baseProject, ...overrides });
 
+describe('US-8 — Identidad visual por tarjeta', () => {
+  it('expone data-project con el id del proyecto, para que el CSS aplique su tema real', () => {
+    renderWithI18n(<ProjectCard project={build({ id: 'trailstats' })} />);
+    expect(screen.getByRole('article')).toHaveAttribute('data-project', 'trailstats');
+  });
+});
+
 describe('US-4 — Metadatos de la tarjeta', () => {
   it('CA-1.2/CA-4.1/CA-4.3: renderiza nombre, versión, scaffold y stack', () => {
     renderWithI18n(<ProjectCard project={build()} />);

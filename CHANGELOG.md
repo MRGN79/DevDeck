@@ -9,7 +9,7 @@ y el proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Added
 
-- Catálogo de proyectos en grid de tarjetas, con datos estáticos en `src/data/projects.js`
+- Catálogo de proyectos en grid de tarjetas, con datos estáticos en `src/data/projects.js`, ordenadas alfabéticamente por nombre
 - Filtro por estado (`active` / `in-progress` / `paused` / `idea`)
 - Interfaz en inglés y castellano con selector de idioma
 - Tema oscuro por defecto
@@ -21,6 +21,9 @@ y el proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Disparador `schedule` en el workflow de despliegue (cada 6 horas) para refrescar el sitio sin necesidad de un push
 - Proyectos TerceroDePrimaria y TrailStats añadidos al catálogo (repo configurado, descripción/estado/versión/stack pendientes de datos reales)
 - Decisión de arquitectura documentada en `docs/decisions/ADR-002-datos-github-en-build.md` (fetch en build vs runtime, aproximación de "tamaño de repo" en vez de líneas de código reales)
+- El enlace "Demo" apunta por defecto a la GitHub Pages del proyecto (`https://<owner>.github.io/<repo>/`, derivada de `repo`) cuando no se rellena `demo` a mano; un valor explícito en `demo` sigue teniendo prioridad
+- Identidad visual por tarjeta: franja superior y degradado de fondo con los colores reales de cada proyecto (extraídos de su CSS desplegado), ver `docs/decisions/ADR-003-identidad-visual-por-tarjeta.md`
+- Pie de página con la versión del manifiesto (`package.json`, un solo origen de verdad) y una descripción breve, en EN/ES
 
 ### Changed
 

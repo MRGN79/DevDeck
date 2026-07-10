@@ -31,6 +31,7 @@ describe('i18n — paridad de claves EN/ES', () => {
       'app.title',
       'app.subtitle',
       'app.languageLabel',
+      'app.footerDescription',
       'filters.statusLabel',
       'filters.statusAll',
       'status.active',

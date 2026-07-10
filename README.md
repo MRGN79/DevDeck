@@ -75,7 +75,22 @@ Para añadir un proyecto al catálogo, añade un objeto a `src/data/projects.js`
 campos: `id` (slug estable), `name`, `description`, `status` (`active` / `in-progress` /
 `paused` / `idea`), `version`, `scaffoldVersion`, `stack`, `repo`, `demo`. Si `repo` es una
 URL de GitHub (`https://github.com/<owner>/<repo>`), sus estadísticas se rellenan solas en
-el siguiente build — ver la siguiente sección.
+el siguiente build — ver la siguiente sección. `demo` también se rellena solo si lo dejas en
+`null` (ver "Enlace de demo" más abajo); pon un valor explícito solo si el proyecto está
+alojado en otro sitio.
+
+## Enlace de demo
+
+Por defecto, el enlace "Demo" de cada tarjeta apunta a la GitHub Pages del propio proyecto
+(`https://<owner>.github.io/<repo>/`, derivada de `repo`) — no hace falta rellenar `demo` a
+mano. Si un proyecto está desplegado en otro sitio (Vercel, Netlify, un dominio propio...),
+pon esa URL explícitamente en `demo` en `src/data/projects.js` y esa pasa a tener prioridad
+sobre el valor por defecto. Si `repo` es `null` o no es de GitHub y `demo` tampoco se rellena,
+el enlace se muestra deshabilitado como hasta ahora.
+
+Este valor por defecto es una suposición razonable, no una verificación: si el repo no tiene
+GitHub Pages activado, el enlace generado dará 404 hasta que actualices `demo` a mano o
+actives Pages en ese repo.
 
 ## Estadísticas de GitHub en vivo
 
@@ -105,6 +120,19 @@ Detalles a tener en cuenta:
   un catálogo de unos pocos proyectos refrescado cada 6 horas.
 
 Para forzar un refresco manual en local: `npm run fetch-stats`.
+
+## Identidad visual por tarjeta
+
+Cada tarjeta lleva una franja superior y un degradado sutil de fondo con los colores reales
+del propio proyecto (no un tema genérico ni derivado de datos de GitHub) — un eco de su
+identidad visual real, sobre la base oscura del catálogo. Se define en `src/App.css` con
+selectores `.project-card[data-project="<id>"]` (el atributo `data-project` lo pone
+`ProjectCard.jsx` a partir de `project.id`).
+
+Añadir el tema de un proyecto nuevo es manual: hay que mirar su CSS/paleta reales y traducirlos
+a un acento + degradado. Un proyecto sin bloque propio cae automáticamente al estilo neutro por
+defecto — no rompe nada, simplemente no se distingue visualmente hasta que se le da su color.
+Detalle de la decisión y de qué proyectos ya tienen tema: `docs/decisions/ADR-003-identidad-visual-por-tarjeta.md`.
 
 ## Aviso sobre datos sensibles (importante)
 

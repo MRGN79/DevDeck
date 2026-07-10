@@ -48,6 +48,15 @@ Para tener visibilidad rápida del estado de cada uno sin abrir cada repositorio
 - CA-1.4 (accesibilidad) — Dado que el usuario solo usa teclado, cuando navega la página, entonces
   puede alcanzar y activar todos los controles interactivos (filtros de estado, switch de idioma,
   enlaces activos de repo/demo) mediante Tab y Enter/Espacio, sin ratón.
+- CA-1.5 — Dado el catálogo, cuando se renderiza (con o sin filtro de estado aplicado), entonces
+  las tarjetas aparecen ordenadas alfabéticamente por `name` (case-insensitive,
+  `localeCompare`) — independientemente del orden en que estén declaradas en `projects.js`.
+  Decisión explícita del usuario: alfabético puro, sin agrupar por estado ni por actividad
+  reciente (por ahora — puede revisitarse).
+- CA-1.6 — Dada la aplicación, cuando se renderiza, entonces muestra un pie de página
+  (`<footer>`, rol `contentinfo`) con la versión del manifiesto (`version` de `package.json`,
+  formato `DevDeck v<versión>`) y una descripción breve (`app.footerDescription`). La versión se
+  lee directamente de `package.json` — un solo origen de verdad, sin duplicar el número a mano.
 
 ---
 
@@ -105,7 +114,16 @@ Para conocer el detalle técnico de un proyecto de un vistazo
 - CA-4.4 — Dado un proyecto con `repo` no nulo, cuando se renderiza el enlace de repositorio,
   entonces es un `<a>` con `target="_blank"` y `rel="noreferrer"` que abre la URL; dado `repo:
   null`, entonces el enlace se muestra deshabilitado (`project-link--disabled`, sin navegación).
-- CA-4.5 — Igual que CA-4.4 aplicado al campo `demo`.
+- CA-4.5 — Igual que CA-4.4 aplicado al campo `demo` resuelto (ver CA-4.6/CA-4.7): enlace activo si
+  hay un valor, deshabilitado si no.
+- CA-4.6 — Dado un proyecto con `demo: null` en `projects.js` y `repo` apuntando a un
+  `https://github.com/<owner>/<repo>`, cuando se renderiza la tarjeta, entonces el enlace "Demo"
+  apunta por defecto a `https://<owner>.github.io/<repo>/` (owner en minúsculas, repo con su
+  capitalización exacta) — decisión explícita del usuario, sin verificar que ese Pages exista
+  realmente (puede dar 404 si el repo no lo tiene activado).
+- CA-4.7 — Dado un proyecto con `demo` explícito (no `null`) en `projects.js`, cuando se renderiza
+  su tarjeta, entonces ese valor tiene prioridad sobre el default de GitHub Pages, aunque `repo`
+  también apunte a GitHub.
 
 **Textos de interfaz (i18n)**
 
@@ -214,13 +232,38 @@ usuario), y datos de repos privados sin token configurado (`GH_STATS_TOKEN`, pen
 
 ---
 
+## US-8 — Identidad visual por tarjeta
+
+```
+Como desarrollador que enseña su catálogo a terceros
+Quiero que cada tarjeta tenga un acento visual propio del proyecto real
+Para que el catálogo sea original y reconocible, no una plantilla genérica
+```
+
+**Criterios de aceptación**
+
+- CA-8.1 — Dada una tarjeta de un proyecto con tema definido (`devdeck`, `fobforge`, `selfforge`,
+  `terceroDePrimaria`, `trailstats`), cuando se renderiza, entonces expone `data-project="<id>"`
+  en el elemento raíz y el CSS aplica su acento (franja superior) y degradado de fondo propios,
+  extraídos a mano del CSS real desplegado de ese proyecto.
+- CA-8.2 — Dado un proyecto sin bloque de tema propio en `src/App.css`, cuando se renderiza su
+  tarjeta, entonces cae al estilo neutro por defecto (borde superior del color de borde estándar,
+  sin degradado) — no rompe el layout ni el contraste.
+
+**Fuera de alcance de esta US:** automatizar la extracción de paleta (es trabajo manual, ver
+`docs/decisions/ADR-003-identidad-visual-por-tarjeta.md`), y réplica fiel de temas claros dentro
+del catálogo oscuro (se traduce a un eco de color, no al tema original completo).
+
+---
+
 ## Casos edge identificados
 
 | # | Escenario | Comportamiento esperado | Estado |
 |---|---|---|---|
 | E-1 | `scaffoldVersion: null` (p.ej. FobForge) | Muestra "Not available" (`card.notAvailable`) | Cubierto (CA-4.2) |
 | E-2 | `repo: null` | Enlace de repo deshabilitado, sin navegación | Cubierto (CA-4.4) |
-| E-3 | `demo: null` | Enlace de demo deshabilitado, sin navegación | Cubierto (CA-4.5) |
+| E-3 | `demo: null` y `repo: null` (o no-GitHub) | Enlace de demo deshabilitado, sin navegación | Cubierto (CA-4.5) |
+| E-3b | `demo: null` y `repo` de GitHub | Enlace de demo apunta al default de GitHub Pages | Cubierto (CA-4.6) |
 | E-4 | Filtro que deja 0 proyectos (p.ej. estado `idea`, sin proyectos con ese estado) | Estado vacío visible | Cubierto (CA-6.1) |
 | E-6 | `stack` vacío `[]` | No se renderiza ninguna etiqueta; la tarjeta no rompe | A verificar por Tester (hoy ningún proyecto tiene stack vacío) |
 | E-7 | `name` duplicado entre proyectos | La `key` de React (`project.name`) colisiona → riesgo de render | A vigilar: la unicidad del nombre es un invariante implícito del modelo de datos |

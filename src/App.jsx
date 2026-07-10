@@ -3,16 +3,19 @@ import { useI18n } from './i18n/useI18n.js';
 import { projects as catalogProjects } from './data/mergedProjects.js';
 import { ProjectCard } from './components/ProjectCard.jsx';
 import { Filters } from './components/Filters.jsx';
+import { version } from '../package.json';
 
 export default function App({ projects = catalogProjects } = {}) {
   const { t, locale, setLocale } = useI18n();
   const [statusFilter, setStatusFilter] = useState('all');
 
   const visibleProjects = useMemo(() => {
-    return projects.filter((project) => {
-      if (statusFilter !== 'all' && project.status !== statusFilter) return false;
-      return true;
-    });
+    return projects
+      .filter((project) => {
+        if (statusFilter !== 'all' && project.status !== statusFilter) return false;
+        return true;
+      })
+      .sort((a, b) => a.name.localeCompare(b.name));
   }, [statusFilter, projects]);
 
   return (
@@ -56,6 +59,11 @@ export default function App({ projects = catalogProjects } = {}) {
           <p className="empty-state__hint">{t('empty.hint')}</p>
         </div>
       )}
+
+      <footer className="app-footer">
+        <span className="app-footer__version">DevDeck v{version}</span>
+        <span className="app-footer__description">{t('app.footerDescription')}</span>
+      </footer>
     </div>
   );
 }

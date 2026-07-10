@@ -3,10 +3,10 @@ import { StatusBadge } from './StatusBadge.jsx';
 
 export function ProjectCard({ project }) {
   const { t } = useI18n();
-  const { name, description, status, version, scaffoldVersion, stack, repo, demo, github } = project;
+  const { id, name, description, status, version, scaffoldVersion, stack, repo, demo, github } = project;
 
   return (
-    <article className="project-card">
+    <article className="project-card" data-project={id}>
       <header className="project-card__header">
         <h2 className="project-card__name">{name}</h2>
       </header>

@@ -3,6 +3,7 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from './App.jsx';
 import { projects } from './data/projects.js';
+import { version } from '../package.json';
 import { renderWithI18n } from './test/utils.jsx';
 
 const cards = () => screen.queryAllByRole('article');
@@ -25,10 +26,21 @@ const NO_IDEA_PROJECTS = ['active', 'paused', 'in-progress'].map((status) => ({
 }));
 
 describe('US-1 — Ver el catálogo', () => {
-  it('CA-1.1: sin filtros muestra una tarjeta por cada proyecto de projects.js', () => {
+  it('CA-1.1: sin filtros muestra una tarjeta por cada proyecto de projects.js, en orden alfabético', () => {
     renderWithI18n(<App />);
     expect(cards()).toHaveLength(projects.length);
-    expect(cardNames()).toEqual(projects.map((p) => p.name));
+    const expected = [...projects].map((p) => p.name).sort((a, b) => a.localeCompare(b));
+    expect(cardNames()).toEqual(expected);
+  });
+
+  it('CA-1.5: las tarjetas se ordenan alfabéticamente por nombre, no por orden de inserción', () => {
+    const shuffled = [
+      { id: 'z', name: 'Zeta', description: '', status: 'active', version: '1.0.0', scaffoldVersion: null, stack: [], repo: null, demo: null },
+      { id: 'a', name: 'Alpha', description: '', status: 'active', version: '1.0.0', scaffoldVersion: null, stack: [], repo: null, demo: null },
+      { id: 'm', name: 'Mid', description: '', status: 'active', version: '1.0.0', scaffoldVersion: null, stack: [], repo: null, demo: null },
+    ];
+    renderWithI18n(<App projects={shuffled} />);
+    expect(cardNames()).toEqual(['Alpha', 'Mid', 'Zeta']);
   });
 
   it('CA-1.3: la cabecera muestra title y subtitle (EN por defecto)', () => {
@@ -36,6 +48,15 @@ describe('US-1 — Ver el catálogo', () => {
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('DevDeck');
     expect(
       screen.getByText('Your personal development project catalog'),
+    ).toBeInTheDocument();
+  });
+
+  it('CA-1.6: el pie de página muestra la versión del manifiesto y una descripción breve', () => {
+    renderWithI18n(<App />);
+    const footer = screen.getByRole('contentinfo');
+    expect(footer).toHaveTextContent(`DevDeck v${version}`);
+    expect(
+      screen.getByText('Built with React + Vite. GitHub stats refresh automatically.'),
     ).toBeInTheDocument();
   });
 });
@@ -53,7 +74,10 @@ describe('US-2 — Filtrar por estado', () => {
     renderWithI18n(<App />);
     await user.click(screen.getByRole('button', { name: 'Active' }));
 
-    const expected = projects.filter((p) => p.status === 'active').map((p) => p.name);
+    const expected = projects
+      .filter((p) => p.status === 'active')
+      .map((p) => p.name)
+      .sort((a, b) => a.localeCompare(b));
     expect(cardNames()).toEqual(expected);
     expect(screen.getByRole('button', { name: 'Active' })).toHaveClass(
       'filter-pill--active',
@@ -126,6 +150,10 @@ describe('US-5 — Cambio de idioma EN/ES', () => {
     // insignia de estado traducida (Selfforge = active): aparece en la píldora de
     // filtro y en la insignia de la tarjeta -> al menos una ocurrencia
     expect(screen.getAllByText('Activo').length).toBeGreaterThan(0);
+    // pie de página traducido
+    expect(
+      screen.getByText('Hecho con React + Vite. Las estadísticas de GitHub se actualizan solas.'),
+    ).toBeInTheDocument();
   });
 
   it('CA-5.3: el estado vacío también se traduce, sin claves sin resolver', async () => {
