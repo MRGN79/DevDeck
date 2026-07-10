@@ -133,76 +133,6 @@ body {
   outline-offset: -2px;
 }
 
-.public-toggle {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  cursor: pointer;
-  user-select: none;
-}
-
-.public-toggle__text {
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
-}
-
-.public-toggle__label {
-  color: var(--text);
-  font-weight: 500;
-}
-
-.public-toggle__hint {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-}
-
-.public-toggle input {
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.public-toggle__track {
-  position: relative;
-  width: 40px;
-  height: 22px;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  transition: background 0.15s ease, border-color 0.15s ease;
-  flex-shrink: 0;
-}
-
-.public-toggle__thumb {
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: var(--text-muted);
-  transition: transform 0.15s ease, background 0.15s ease;
-}
-
-.public-toggle input:checked + .public-toggle__track {
-  background: var(--accent-soft);
-  border-color: var(--accent);
-}
-
-.public-toggle input:checked + .public-toggle__track .public-toggle__thumb {
-  transform: translateX(18px);
-  background: var(--accent);
-}
-
-.public-toggle input:focus-visible + .public-toggle__track {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
 .project-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -236,26 +166,6 @@ body {
   margin: 0;
   font-size: 1.15rem;
   letter-spacing: -0.01em;
-}
-
-.visibility-pill {
-  font-size: 0.7rem;
-  font-weight: 600;
-  padding: 0.2rem 0.55rem;
-  border-radius: 999px;
-  white-space: nowrap;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-}
-
-.visibility-pill--public {
-  background: var(--status-active-bg);
-  color: var(--status-active);
-}
-
-.visibility-pill--private {
-  background: var(--status-paused-bg);
-  color: var(--status-paused);
 }
 
 .status-badge {
@@ -325,6 +235,44 @@ body {
   font-size: 0.75rem;
   padding: 0.2rem 0.55rem;
   border-radius: 6px;
+}
+
+.project-card__github {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  margin: 0;
+  padding: 0.6rem 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.project-card__github dt {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+}
+
+.project-card__github dd {
+  margin: 0.1rem 0 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.project-card__topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.topic-tag {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-size: 0.7rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
 }
 
 .project-card__links {

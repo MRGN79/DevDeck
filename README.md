@@ -3,10 +3,12 @@
 ## ¿Qué es esto?
 
 DevDeck es un catálogo personal de proyectos de desarrollo. Muestra cada proyecto como
-una tarjeta con su estado, versión, stack tecnológico y enlaces, con un modo público que
-filtra solo los proyectos marcados como visibles y un filtro por estado.
+una tarjeta con su estado, versión, stack tecnológico, enlaces y estadísticas en vivo de
+GitHub (estrellas, lenguaje, commits, colaboradores...), con un filtro por estado.
 
-No tiene backend: todos los proyectos viven como datos estáticos en el propio código.
+No tiene backend: los datos manuales de cada proyecto viven en el propio código, y las
+estadísticas de GitHub se obtienen automáticamente en cada build — ver
+[Estadísticas de GitHub](#estadísticas-de-github-en-vivo).
 
 ## Stack
 
@@ -42,9 +44,9 @@ Abre `http://localhost:5173`.
 
 Suite de tests con [Vitest](https://vitest.dev) y
 [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
-(entorno jsdom). Cubre el filtrado por estado, el modo público y su combinación,
-el render de campos nulos, el estado vacío, la navegación por teclado y el cambio
-de idioma EN/ES.
+(entorno jsdom). Cubre el filtrado por estado, el render de campos nulos y de las
+estadísticas de GitHub, el estado vacío, la navegación por teclado, el cambio de idioma
+EN/ES y las funciones puras del script de estadísticas de GitHub.
 
 ```bash
 npm test        # ejecuta la suite una vez
@@ -55,30 +57,61 @@ npm run test:watch   # modo watch durante el desarrollo
 
 ```
 src/
-  data/projects.js       Datos de los proyectos del catálogo
-  components/            ProjectCard, StatusBadge, Filters
-  i18n/                  Provider y hook de internacionalización
-  App.jsx                Composición de la vista principal
+  data/projects.js                  Datos manuales de cada proyecto (fuente de verdad)
+  data/github-stats.generated.json  Estadísticas de GitHub — generado en build, no editar a mano
+  data/mergedProjects.js            Combina projects.js + github-stats.generated.json
+  components/                       ProjectCard, StatusBadge, Filters
+  i18n/                             Provider y hook de internacionalización
+  App.jsx                           Composición de la vista principal
 locales/
   en/common.json         Textos de interfaz en inglés
   es/common.json         Textos de interfaz en castellano
+scripts/
+  fetch-github-stats.mjs        Consulta la API de GitHub y escribe github-stats.generated.json
+  github-stats-helpers.mjs      Funciones puras (parseo de URL, cabecera Link, mapeo de respuesta)
 ```
 
 Para añadir un proyecto al catálogo, añade un objeto a `src/data/projects.js` con los
 campos: `id` (slug estable), `name`, `description`, `status` (`active` / `in-progress` /
-`paused` / `idea`), `version`, `scaffoldVersion`, `stack`, `repo`, `demo`, `isPublic`.
+`paused` / `idea`), `version`, `scaffoldVersion`, `stack`, `repo`, `demo`. Si `repo` es una
+URL de GitHub (`https://github.com/<owner>/<repo>`), sus estadísticas se rellenan solas en
+el siguiente build — ver la siguiente sección.
 
-## Sobre `isPublic` y el "Modo público" (importante)
+## Estadísticas de GitHub en vivo
 
-`isPublic: false` **no oculta ni protege los datos de un proyecto**: solo controla si su
-tarjeta se muestra cuando el "Modo público" está activado. Como DevDeck no tiene backend,
-todo el contenido de `src/data/projects.js` —incluidos los proyectos marcados como
-privados— se compila dentro del bundle JavaScript de `dist/` y es visible para cualquiera
-que inspeccione el sitio (código fuente, DevTools o el propio archivo servido).
+Cuando el campo `repo` de un proyecto apunta a `https://github.com/<owner>/<repo>`, la
+tarjeta muestra automáticamente: estrellas, lenguaje principal, nº de commits, nº de
+colaboradores, issues abiertas, licencia, tamaño del repo y fecha del último push, además
+de sus topics como etiquetas. Si `repo` es `null` o no es una URL de GitHub, esa sección
+simplemente no aparece.
 
-Por tanto, **no pongas en `src/data/projects.js` nada que no puedas publicar**: URLs de
-repos privados, notas internas, enlaces sensibles, etc. El "Modo público" es una comodidad
-de visualización, no un control de acceso.
+Estos datos **no se editan a mano**: `npm run build` ejecuta primero
+`scripts/fetch-github-stats.mjs` (hook `prebuild`), que consulta la API de GitHub y escribe
+`src/data/github-stats.generated.json`. El workflow de despliegue además corre cada 6 horas
+(`schedule` en `.github/workflows/deploy.yml`), así que el sitio se refresca solo aunque no
+haya ningún commit nuevo. El `git log` no crece por esto — el JSON no se guarda entre
+ejecuciones, se regenera desde cero en cada build.
+
+Detalles a tener en cuenta:
+- **No es tiempo real al segundo** — el dato puede tener hasta 6 horas de desfase (ver
+  `docs/decisions/ADR-002-datos-github-en-build.md` para la justificación completa).
+- **"Tamaño del repo" no es "líneas de código"** — es el tamaño en KB que reporta la propia
+  API de GitHub, una aproximación barata sin clonar el repositorio.
+- **Repos privados** fallan la petición sin autenticar (403/404) y simplemente no muestran
+  estadísticas — no rompen el build. Para leerlos hace falta un token con permiso de lectura
+  guardado como secret `GH_STATS_TOKEN` en GitHub Actions (visto bueno de Seguridad y del
+  Abogado requerido antes de darlo de alta, por el alcance de acceso que otorga).
+- Sin `GH_STATS_TOKEN`, las peticiones son sin autenticar (60/hora por IP) — de sobra para
+  un catálogo de unos pocos proyectos refrescado cada 6 horas.
+
+Para forzar un refresco manual en local: `npm run fetch-stats`.
+
+## Aviso sobre datos sensibles (importante)
+
+DevDeck no tiene backend: todo el contenido de `src/data/projects.js` se compila dentro
+del bundle JavaScript de `dist/` y es visible para cualquiera que inspeccione el sitio
+desplegado (código fuente, DevTools o el propio archivo servido). No pongas ahí nada que
+no puedas publicar: URLs de repos privados, notas internas, enlaces sensibles, etc.
 
 ## Desplegar
 

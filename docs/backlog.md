@@ -3,19 +3,22 @@
 ## Contexto del Proyecto
 
 **Qué es:** Catálogo personal de proyectos de desarrollo. Muestra estado, versión, stack, versión
-de scaffold y enlaces de cada proyecto en una cuadrícula de tarjetas, con filtro por estado y un
-modo público que oculta los proyectos no presentables.
+de scaffold, enlaces y estadísticas de GitHub en vivo de cada proyecto en una cuadrícula de
+tarjetas, con filtro por estado.
 **Problema que resuelve:** Centraliza en una vista única qué proyectos personales existen, en qué
-estado están y cuáles son presentables a terceros.
-**Usuarios objetivo:** El propio desarrollador (uso personal). Potenciales visitantes externos solo
-si se despliega en modo público.
+estado están, y sus métricas de GitHub sin mantenimiento manual.
+**Usuarios objetivo:** El propio desarrollador (uso personal). El sitio está desplegado públicamente
+en GitHub Pages, así que cualquier visitante puede verlo.
 **Potencial comercial:** 🔴 sin potencial (dictamen Growth consultor) — herramienta interna, no un
 producto. Growth no vuelve a intervenir salvo pivote.
-**Stack:** React 18 + Vite 5, sin backend. Datos estáticos en `src/data/projects.js`. i18n propio
-(EN/ES). Catálogo de solo lectura en esta versión.
+**Stack:** React 18 + Vite 5, sin backend. Datos manuales estáticos en `src/data/projects.js`;
+estadísticas de GitHub obtenidas en build time (`scripts/fetch-github-stats.mjs`) y combinadas en
+`src/data/mergedProjects.js`. i18n propio (EN/ES). Catálogo de solo lectura en esta versión.
 **Versión actual:** 0.1.0 — scaffold 1.15.0
 **Estado:** En desarrollo (fase 0.y.z — sin garantías de estabilidad)
-**Entornos:** GitHub Pages, vía `.github/workflows/deploy.yml` (deploy automático en cada push a `main`; requiere activar Pages → Source: "GitHub Actions" una vez en Settings)
+**Entornos:** GitHub Pages, vía `.github/workflows/deploy.yml` (deploy automático en cada push a
+`main` y cada 6h por `schedule`, para refrescar las estadísticas de GitHub sin necesidad de push;
+requiere activar Pages → Source: "GitHub Actions" una vez en Settings)
 
 ---
 
@@ -23,10 +26,11 @@ producto. Growth no vuelve a intervenir salvo pivote.
 
 | Feature | Agente(s) activo(s) | Estado | Rama |
 |---|---|---|---|
-| Catálogo inicial de proyectos | — | Todos los gates aprobados (QA ✅, Accesibilidad ✅ AA, Responsabilidad Social ✅, Seguridad ✅, Abogado ✅); pendiente de confirmación del usuario para abrir PR y mergear | claude/devdeck-project-catalog-el95gw |
+| Eliminar modo público/privado | — | Código, tests y docs actualizados; pendiente de confirmación del usuario para abrir PR y mergear | revert/public-mode-toggle |
+| Estadísticas de GitHub en vivo + proyectos TerceroDePrimaria y TrailStats | — | Pipeline de fetch en build implementado, testeado, y los 5 `repo` ya configurados; pendiente de datos manuales de TerceroDePrimaria y TrailStats | feat/github-live-stats (creada sobre revert/public-mode-toggle, aún sin mergear) |
 
-> Specs y criterios de aceptación: `docs/acceptance-criteria.md` (en la rama de feature).
-> ADR: `docs/decisions/ADR-001-stack-y-i18n.md` (en la rama de feature).
+> Specs y criterios de aceptación: `docs/acceptance-criteria.md`.
+> ADR: `docs/decisions/ADR-001-stack-y-i18n.md`, `docs/decisions/ADR-002-datos-github-en-build.md`.
 
 ---
 
@@ -47,13 +51,21 @@ producto. Growth no vuelve a intervenir salvo pivote.
 ## Decisiones Pendientes
 
 - [x] ~~¿Se despliega DevDeck públicamente?~~ — resuelto: el usuario confirmó el despliegue a GitHub
-  Pages. El Abogado ya dictaminó ✅ para el estado actual (sin datos de terceros, sin PII). El
-  hallazgo de Seguridad sobre `isPublic` (filtro de presentación, no control de acceso) ya está
-  documentado en el README y en el copy de la UI.
+  Pages. El Abogado ya dictaminó ✅ para el estado actual (sin datos de terceros, sin PII).
 - [ ] ¿Se hace público el repositorio de GitHub (además del sitio desplegado)? — GitHub Pages vía
   Actions solo publica el artefacto `dist/`, no el repositorio. Si además se hace público el repo,
   el Jefe debe advertir que `.claude/`, `CLAUDE.md` y `docs/` quedarían visibles en GitHub (regla de
   Archivos Privados).
+- [x] ~~`repo` (owner/repo de GitHub) de Selfforge, FobForge y TerceroDePrimaria~~ — resuelto: el
+  usuario los facilitó, y de paso añadió TrailStats como quinto proyecto del catálogo. Los 5
+  proyectos ya apuntan a su repo real (`MRGN79/SelfForge`, `MRGN79/fobforge`, `MRGN79/DevDeck`,
+  `MRGN79/TerceroDePrimaria`, `MRGN79/TrailStats`).
+- [ ] Datos manuales de TerceroDePrimaria y TrailStats (`description`, `status`, `version`,
+  `stack`) — hoy son placeholder (`"Pendiente de descripción."`, `status: 'idea'`, `version:
+  '0.0.0'`, `stack: []`) para ambos.
+- [ ] Si algún repo (p.ej. FobForge) resulta estar en privado, hace falta decidir si se da de alta
+  el secret `GH_STATS_TOKEN` (con permiso de lectura sobre ese repo) — requiere visto bueno de
+  Seguridad y del Abogado antes de configurarlo, por el alcance de acceso que otorga.
 
 ---
 
@@ -62,8 +74,8 @@ producto. Growth no vuelve a intervenir salvo pivote.
 - [x] ~~Sin suite de tests automatizados~~ — resuelto: 28 tests (Vitest + React Testing Library)
   cubriendo los criterios de aceptación.
 - [x] ~~`aria-label="Language"` hardcodeado~~ — resuelto: localizado vía clave `app.languageLabel`.
-- [x] ~~Toggle "Modo público" no comunicaba su efecto~~ — resuelto: hint visible y aclarado que es
-  solo un filtro de presentación.
+- [x] ~~Toggle "Modo público" no comunicaba su efecto~~ — obsoleto: el toggle se eliminó por completo
+  (no aportaba valor real). Si se recupera en el futuro, se documentará como feature nueva.
 - [ ] `card.stack` ("Stack") definida en i18n pero no usada como encabezado visible sobre las
   etiquetas de stack — impacto: Bajo.
 - [ ] `description` de cada proyecto en `src/data/projects.js` está hardcodeada en castellano; en

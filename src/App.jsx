@@ -1,21 +1,19 @@
 import { useMemo, useState } from 'react';
 import { useI18n } from './i18n/useI18n.js';
-import { projects } from './data/projects.js';
+import { projects as catalogProjects } from './data/mergedProjects.js';
 import { ProjectCard } from './components/ProjectCard.jsx';
 import { Filters } from './components/Filters.jsx';
 
-export default function App() {
+export default function App({ projects = catalogProjects } = {}) {
   const { t, locale, setLocale } = useI18n();
   const [statusFilter, setStatusFilter] = useState('all');
-  const [publicOnly, setPublicOnly] = useState(false);
 
   const visibleProjects = useMemo(() => {
     return projects.filter((project) => {
-      if (publicOnly && !project.isPublic) return false;
       if (statusFilter !== 'all' && project.status !== statusFilter) return false;
       return true;
     });
-  }, [statusFilter, publicOnly]);
+  }, [statusFilter, projects]);
 
   return (
     <div className="app">
@@ -44,12 +42,7 @@ export default function App() {
         </div>
       </header>
 
-      <Filters
-        statusFilter={statusFilter}
-        onStatusChange={setStatusFilter}
-        publicOnly={publicOnly}
-        onPublicOnlyChange={setPublicOnly}
-      />
+      <Filters statusFilter={statusFilter} onStatusChange={setStatusFilter} />
 
       {visibleProjects.length > 0 ? (
         <section className="project-grid">

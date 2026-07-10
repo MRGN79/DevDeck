@@ -13,13 +13,12 @@ const baseProject = {
   stack: ['React', 'Vite', 'TypeScript'],
   repo: 'https://example.test/repo',
   demo: 'https://example.test/demo',
-  isPublic: true,
 };
 
 const build = (overrides) => ({ ...baseProject, ...overrides });
 
 describe('US-4 — Metadatos de la tarjeta', () => {
-  it('CA-1.2/CA-4.1/CA-4.3: renderiza nombre, versión, scaffold, stack y píldora de visibilidad', () => {
+  it('CA-1.2/CA-4.1/CA-4.3: renderiza nombre, versión, scaffold y stack', () => {
     renderWithI18n(<ProjectCard project={build()} />);
     const card = screen.getByRole('article');
 
@@ -34,7 +33,6 @@ describe('US-4 — Metadatos de la tarjeta', () => {
     ['React', 'Vite', 'TypeScript'].forEach((tech) => {
       expect(within(card).getByText(tech)).toBeInTheDocument();
     });
-    expect(within(card).getByText('Public')).toBeInTheDocument();
   });
 
   it('CA-4.2/E-1: scaffoldVersion null muestra "Not available"', () => {
@@ -70,17 +68,63 @@ describe('US-4 — Metadatos de la tarjeta', () => {
     expect(screen.getByText('Demo')).toHaveClass('project-link--disabled');
   });
 
-  it('proyecto privado muestra la píldora "Private"', () => {
-    renderWithI18n(<ProjectCard project={build({ isPublic: false })} />);
-    expect(screen.getByText('Private')).toBeInTheDocument();
-    expect(screen.queryByText('Public')).not.toBeInTheDocument();
-  });
-
   it('E-6: stack vacío no rompe la tarjeta y no renderiza etiquetas', () => {
     renderWithI18n(<ProjectCard project={build({ stack: [] })} />);
     const card = screen.getByRole('article');
     expect(card.querySelectorAll('.stack-tag')).toHaveLength(0);
     // la tarjeta sigue mostrando su nombre
     expect(within(card).getByText('DemoProject')).toBeInTheDocument();
+  });
+});
+
+describe('US-7 — Estadísticas de GitHub', () => {
+  const github = {
+    stars: 42,
+    language: 'JavaScript',
+    commits: 128,
+    contributors: 2,
+    openIssues: 3,
+    license: 'MIT',
+    sizeKb: 512,
+    lastPushedAt: '2026-07-01T10:00:00Z',
+    topics: ['catalog', 'react'],
+  };
+
+  it('sin github, no renderiza la sección de estadísticas ni topics', () => {
+    renderWithI18n(<ProjectCard project={build({ github: null })} />);
+    expect(screen.queryByText('Stars')).not.toBeInTheDocument();
+    expect(screen.queryByText('GitHub stats')).not.toBeInTheDocument();
+  });
+
+  it('con github, renderiza estrellas, lenguaje, commits, colaboradores, issues, licencia, tamaño y fecha', () => {
+    renderWithI18n(<ProjectCard project={build({ github })} />);
+    expect(screen.getByText('Stars')).toBeInTheDocument();
+    expect(screen.getByText('42')).toBeInTheDocument();
+    expect(screen.getByText('Language')).toBeInTheDocument();
+    expect(screen.getByText('JavaScript')).toBeInTheDocument();
+    expect(screen.getByText('Commits')).toBeInTheDocument();
+    expect(screen.getByText('128')).toBeInTheDocument();
+    expect(screen.getByText('Contributors')).toBeInTheDocument();
+    expect(screen.getByText('Open issues')).toBeInTheDocument();
+    expect(screen.getByText('License')).toBeInTheDocument();
+    expect(screen.getByText('MIT')).toBeInTheDocument();
+    expect(screen.getByText('512 KB')).toBeInTheDocument();
+    expect(screen.getByText('2026-07-01')).toBeInTheDocument();
+  });
+
+  it('renderiza cada topic como etiqueta independiente', () => {
+    renderWithI18n(<ProjectCard project={build({ github })} />);
+    expect(screen.getByText('catalog')).toHaveClass('topic-tag');
+    expect(screen.getByText('react')).toHaveClass('topic-tag');
+  });
+
+  it('campos ausentes (null) no rompen el render y se omiten', () => {
+    renderWithI18n(
+      <ProjectCard
+        project={build({ github: { stars: 5, language: null, topics: [] } })}
+      />,
+    );
+    expect(screen.getByText('Stars')).toBeInTheDocument();
+    expect(screen.queryByText('Language')).not.toBeInTheDocument();
   });
 });

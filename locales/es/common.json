@@ -5,8 +5,6 @@
     "languageLabel": "Idioma"
   },
   "filters": {
-    "publicMode": "Modo público",
-    "publicModeHint": "Solo filtra la vista — los proyectos ocultos siguen en el código publicado",
     "statusLabel": "Estado",
     "statusAll": "Todos"
   },
@@ -22,12 +20,21 @@
     "stack": "Stack",
     "repo": "Repositorio",
     "demo": "Demo",
-    "notAvailable": "No disponible",
-    "public": "Público",
-    "private": "Privado"
+    "notAvailable": "No disponible"
+  },
+  "github": {
+    "sectionLabel": "Estadísticas de GitHub",
+    "stars": "Estrellas",
+    "language": "Lenguaje",
+    "commits": "Commits",
+    "contributors": "Colaboradores",
+    "openIssues": "Issues abiertas",
+    "license": "Licencia",
+    "size": "Tamaño del repo",
+    "lastUpdate": "Última actualización"
   },
   "empty": {
     "title": "Ningún proyecto coincide con estos filtros",
-    "hint": "Prueba otro estado o desactiva el modo público"
+    "hint": "Prueba otro estado"
   }
 }

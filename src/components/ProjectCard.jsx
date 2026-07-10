@@ -3,15 +3,12 @@ import { StatusBadge } from './StatusBadge.jsx';
 
 export function ProjectCard({ project }) {
   const { t } = useI18n();
-  const { name, description, status, version, scaffoldVersion, stack, repo, demo, isPublic } = project;
+  const { name, description, status, version, scaffoldVersion, stack, repo, demo, github } = project;
 
   return (
     <article className="project-card">
       <header className="project-card__header">
         <h2 className="project-card__name">{name}</h2>
-        <span className={`visibility-pill visibility-pill--${isPublic ? 'public' : 'private'}`}>
-          {isPublic ? t('card.public') : t('card.private')}
-        </span>
       </header>
 
       <StatusBadge status={status} />
@@ -36,6 +33,69 @@ export function ProjectCard({ project }) {
           </span>
         ))}
       </div>
+
+      {github && (
+        <dl className="project-card__github" aria-label={t('github.sectionLabel')}>
+          {typeof github.stars === 'number' && (
+            <div>
+              <dt>{t('github.stars')}</dt>
+              <dd>{github.stars}</dd>
+            </div>
+          )}
+          {github.language && (
+            <div>
+              <dt>{t('github.language')}</dt>
+              <dd>{github.language}</dd>
+            </div>
+          )}
+          {typeof github.commits === 'number' && (
+            <div>
+              <dt>{t('github.commits')}</dt>
+              <dd>{github.commits}</dd>
+            </div>
+          )}
+          {typeof github.contributors === 'number' && (
+            <div>
+              <dt>{t('github.contributors')}</dt>
+              <dd>{github.contributors}</dd>
+            </div>
+          )}
+          {typeof github.openIssues === 'number' && (
+            <div>
+              <dt>{t('github.openIssues')}</dt>
+              <dd>{github.openIssues}</dd>
+            </div>
+          )}
+          {github.license && (
+            <div>
+              <dt>{t('github.license')}</dt>
+              <dd>{github.license}</dd>
+            </div>
+          )}
+          {typeof github.sizeKb === 'number' && (
+            <div>
+              <dt>{t('github.size')}</dt>
+              <dd>{github.sizeKb} KB</dd>
+            </div>
+          )}
+          {github.lastPushedAt && (
+            <div>
+              <dt>{t('github.lastUpdate')}</dt>
+              <dd>{github.lastPushedAt.slice(0, 10)}</dd>
+            </div>
+          )}
+        </dl>
+      )}
+
+      {github?.topics?.length > 0 && (
+        <div className="project-card__topics">
+          {github.topics.map((topic) => (
+            <span key={topic} className="topic-tag">
+              {topic}
+            </span>
+          ))}
+        </div>
+      )}
 
       <div className="project-card__links">
         {repo ? (
