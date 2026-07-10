@@ -2,11 +2,10 @@
 
 ## Contexto del Proyecto
 
-**Qué es:** Catálogo personal de proyectos de desarrollo. Muestra estado, versión, stack, versión
-de scaffold, enlaces y estadísticas de GitHub en vivo de cada proyecto en una cuadrícula de
-tarjetas, con filtro por estado.
-**Problema que resuelve:** Centraliza en una vista única qué proyectos personales existen, en qué
-estado están, y sus métricas de GitHub sin mantenimiento manual.
+**Qué es:** Catálogo personal de proyectos de desarrollo. Muestra versión, stack, versión de
+scaffold, enlaces y estadísticas de GitHub en vivo de cada proyecto en una cuadrícula de tarjetas.
+**Problema que resuelve:** Centraliza en una vista única qué proyectos personales existen y sus
+métricas de GitHub sin mantenimiento manual.
 **Usuarios objetivo:** El propio desarrollador (uso personal). El sitio está desplegado públicamente
 en GitHub Pages, así que cualquier visitante puede verlo.
 **Potencial comercial:** 🔴 sin potencial (dictamen Growth consultor) — herramienta interna, no un
@@ -26,9 +25,12 @@ requiere activar Pages → Source: "GitHub Actions" una vez en Settings)
 
 | Feature | Agente(s) activo(s) | Estado | Rama |
 |---|---|---|---|
-| Eliminar modo público/privado | — | Código, tests y docs actualizados; pendiente de confirmación del usuario para abrir PR y mergear | revert/public-mode-toggle |
-| Estadísticas de GitHub en vivo + proyectos TerceroDePrimaria y TrailStats | — | Pipeline de fetch en build implementado, testeado, y los 5 `repo` ya configurados; pendiente de datos manuales de TerceroDePrimaria y TrailStats | feat/github-live-stats (creada sobre revert/public-mode-toggle, aún sin mergear) |
-| Identidad visual por tarjeta (fondo basado en el CSS real de cada proyecto) | — | Implementado y verificado visualmente para los 5 proyectos actuales; es trabajo manual por proyecto, no automático | feat/github-live-stats (mismo trabajo en curso) |
+| Datos reales de TerceroDePrimaria/TrailStats (versión, descripción, stack) | — | Mergeado en su mayoría; PR #6 (versión/stack) aún abierta | feat/github-live-stats |
+| Eliminar campo `status` (badge, filtro y estado vacío) | — | Implementado, testeado y verificado visualmente; pendiente de confirmación del usuario para abrir PR y mergear | chore/remove-status-field |
+
+Mergeadas ya en `main`: eliminación del modo público/privado, estadísticas de GitHub en vivo,
+orden alfabético, demo por defecto a GitHub Pages, identidad visual por tarjeta, pie de página
+(PRs #4 y #5).
 
 > Specs y criterios de aceptación: `docs/acceptance-criteria.md`.
 > ADR: `docs/decisions/ADR-001-stack-y-i18n.md`, `docs/decisions/ADR-002-datos-github-en-build.md`, `docs/decisions/ADR-003-identidad-visual-por-tarjeta.md`.
@@ -43,7 +45,7 @@ requiere activar Pages → Source: "GitHub Actions" una vez en Settings)
 
 ### Media prioridad
 - [ ] Búsqueda por nombre o stack.
-- [ ] Ordenar tarjetas por fecha de última actividad o por estado.
+- [ ] Ordenar tarjetas por fecha de última actividad (alternativa al orden alfabético actual).
 
 ### Baja prioridad / Exploración
 
@@ -65,10 +67,10 @@ requiere activar Pages → Source: "GitHub Actions" una vez en Settings)
   resuelto: se leyeron directamente de su `package.json`/`.claude/scaffold.json` real (repos
   clonados temporalmente en esta sesión). `description`, `version` y `scaffoldVersion` ya
   reflejan el dato real.
-- [ ] `status` de TerceroDePrimaria y TrailStats sigue en `'idea'` — es un juicio del usuario, no
-  un dato objetivo, así que no se ha tocado. Señal de contexto: ambos tienen actividad reciente
-  (TerceroDePrimaria, commit del 2026-07-09; TrailStats, del 2026-06-19), probablemente ya no son
-  solo "idea".
+- [x] ~~`status` de TerceroDePrimaria y TrailStats~~ — ya no aplica: el usuario pidió eliminar el
+  campo `status` por completo ("no aporta nada"). Se fue con él la insignia de estado, el filtro
+  y el estado vacío (dependían solo de `status`) — ver la nota de contexto en
+  `docs/acceptance-criteria.md`.
 - [ ] Si algún repo (p.ej. FobForge) resulta estar en privado, hace falta decidir si se da de alta
   el secret `GH_STATS_TOKEN` (con permiso de lectura sobre ese repo) — requiere visto bueno de
   Seguridad y del Abogado antes de configurarlo, por el alcance de acceso que otorga.

@@ -3,8 +3,8 @@
 ## ¿Qué es esto?
 
 DevDeck es un catálogo personal de proyectos de desarrollo. Muestra cada proyecto como
-una tarjeta con su estado, versión, stack tecnológico, enlaces y estadísticas en vivo de
-GitHub (estrellas, lenguaje, commits, colaboradores...), con un filtro por estado.
+una tarjeta con su versión, stack tecnológico, enlaces y estadísticas en vivo de GitHub
+(estrellas, lenguaje, commits, colaboradores...).
 
 No tiene backend: los datos manuales de cada proyecto viven en el propio código, y las
 estadísticas de GitHub se obtienen automáticamente en cada build — ver
@@ -44,9 +44,9 @@ Abre `http://localhost:5173`.
 
 Suite de tests con [Vitest](https://vitest.dev) y
 [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
-(entorno jsdom). Cubre el filtrado por estado, el render de campos nulos y de las
-estadísticas de GitHub, el estado vacío, la navegación por teclado, el cambio de idioma
-EN/ES y las funciones puras del script de estadísticas de GitHub.
+(entorno jsdom). Cubre el orden alfabético del catálogo, el render de campos nulos y de las
+estadísticas de GitHub, la navegación por teclado, el cambio de idioma EN/ES y las funciones
+puras del script de estadísticas de GitHub.
 
 ```bash
 npm test        # ejecuta la suite una vez
@@ -60,7 +60,7 @@ src/
   data/projects.js                  Datos manuales de cada proyecto (fuente de verdad)
   data/github-stats.generated.json  Estadísticas de GitHub — generado en build, no editar a mano
   data/mergedProjects.js            Combina projects.js + github-stats.generated.json
-  components/                       ProjectCard, StatusBadge, Filters
+  components/                       ProjectCard
   i18n/                             Provider y hook de internacionalización
   App.jsx                           Composición de la vista principal
 locales/
@@ -72,12 +72,11 @@ scripts/
 ```
 
 Para añadir un proyecto al catálogo, añade un objeto a `src/data/projects.js` con los
-campos: `id` (slug estable), `name`, `description`, `status` (`active` / `in-progress` /
-`paused` / `idea`), `version`, `scaffoldVersion`, `stack`, `repo`, `demo`. Si `repo` es una
-URL de GitHub (`https://github.com/<owner>/<repo>`), sus estadísticas se rellenan solas en
-el siguiente build — ver la siguiente sección. `demo` también se rellena solo si lo dejas en
-`null` (ver "Enlace de demo" más abajo); pon un valor explícito solo si el proyecto está
-alojado en otro sitio.
+campos: `id` (slug estable), `name`, `description`, `version`, `scaffoldVersion`, `stack`,
+`repo`, `demo`. Si `repo` es una URL de GitHub (`https://github.com/<owner>/<repo>`), sus
+estadísticas se rellenan solas en el siguiente build — ver la siguiente sección. `demo`
+también se rellena solo si lo dejas en `null` (ver "Enlace de demo" más abajo); pon un valor
+explícito solo si el proyecto está alojado en otro sitio.
 
 ## Enlace de demo
 

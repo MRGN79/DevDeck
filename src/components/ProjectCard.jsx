@@ -1,17 +1,14 @@
 import { useI18n } from '../i18n/useI18n.js';
-import { StatusBadge } from './StatusBadge.jsx';
 
 export function ProjectCard({ project }) {
   const { t } = useI18n();
-  const { id, name, description, status, version, scaffoldVersion, stack, repo, demo, github } = project;
+  const { id, name, description, version, scaffoldVersion, stack, repo, demo, github } = project;
 
   return (
     <article className="project-card" data-project={id}>
       <header className="project-card__header">
         <h2 className="project-card__name">{name}</h2>
       </header>
-
-      <StatusBadge status={status} />
 
       <p className="project-card__description">{description}</p>
 

@@ -7,7 +7,6 @@ const baseProject = {
   id: 'demo-project',
   name: 'DemoProject',
   description: 'A synthetic test project.',
-  status: 'active',
   version: '2.0.0',
   scaffoldVersion: '1.15.0',
   stack: ['React', 'Vite', 'TypeScript'],
