@@ -92,10 +92,13 @@ orden alfabético, demo por defecto a GitHub Pages, identidad visual por tarjeta
   régimen i18n que la interfaz?
 - [ ] Enlaces deshabilitados de repo/demo son `<span>` sin `aria-disabled="true"` — impacto: Bajo,
   mejora de claridad semántica (Accesibilidad).
-- [ ] El "Demo" por defecto (GitHub Pages derivada de `repo`) es una suposición sin verificar —
-  para FobForge, TerceroDePrimaria y TrailStats aún no se sabe si el Pages de ese repo existe.
-  Si da 404, corresponde poner `demo` explícito (a `null` para volver al enlace deshabilitado, o a
-  la URL real si está en otro sitio) — decisión del usuario, no del agente.
+- [x] ~~El "Demo" por defecto de FobForge es una suposición sin verificar~~ — resuelto: su propio
+  `index.html` declara `<link rel="canonical" href="https://mrgn79.github.io/fobforge/">`, que
+  coincide exactamente con el default calculado. Confirmado real, no una suposición.
+- [ ] El "Demo" por defecto (GitHub Pages derivada de `repo`) de TerceroDePrimaria y TrailStats
+  sigue sin verificar — aún no se sabe si el Pages de esos repos existe. Si da 404, corresponde
+  poner `demo` explícito (a `null` para volver al enlace deshabilitado, o a la URL real si está
+  en otro sitio) — decisión del usuario, no del agente.
 - [ ] Sin `prefers-reduced-motion` para las transiciones de hover de las tarjetas — impacto: Bajo.
 - [ ] El tema visual por tarjeta (`ADR-003`) es manual: cualquier proyecto nuevo que se añada al
   catálogo cae al estilo neutro por defecto hasta que alguien revise su CSS real y le asigne un
