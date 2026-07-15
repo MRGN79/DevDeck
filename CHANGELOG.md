@@ -29,6 +29,7 @@ y el proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Cada proyecto incorpora un campo `id` estable (slug) como identificador
 - `App` acepta una prop `projects` opcional (por defecto, el catálogo real) para facilitar tests aislados del contenido real del catálogo
 - Datos de FobForge actualizados a su estado real (versión `0.3.0` → `1.0.0`, descripción y stack ya no reflejaban el proyecto actual — ahora es una web tool, no una herramienta de escritorio; se añade `SQL.js` al stack)
+- Datos de todos los proyectos del catálogo revisados contra sus repositorios reales: versión de FobForge (`1.0.0` → `1.0.2`); versión (`1.4.0` → `1.1.0`), descripción y stack de Selfforge (ya no usa Supabase; ahora `Tailwind CSS`)
 
 ### Fixed
 
