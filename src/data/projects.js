@@ -3,10 +3,10 @@ export const projects = [
     id: 'selfforge',
     name: 'Selfforge',
     description:
-      'Rastreador de hábitos personal con seguimiento de rachas, métricas de progreso y recordatorios diarios.',
-    version: '1.4.0',
+      'Rastreador de hábitos con gamificación ligera: rachas, progreso y recompensas para construir mejores rutinas, día a día.',
+    version: '1.1.0',
     scaffoldVersion: '1.12.0',
-    stack: ['React', 'Vite', 'Supabase'],
+    stack: ['React', 'Vite', 'Tailwind CSS'],
     repo: 'https://github.com/MRGN79/SelfForge',
     demo: null,
   },
@@ -15,7 +15,7 @@ export const projects = [
     name: 'FobForge',
     description:
       'Herramienta web para técnicos de instalación: añade y gestiona tags RFID en archivos .prj de BTicino/Legrand Sfera sin conexión física al lector, 100% en el navegador y sin servidor.',
-    version: '1.0.0',
+    version: '1.0.2',
     scaffoldVersion: '1.15.0',
     stack: ['HTML', 'CSS', 'JavaScript', 'SQL.js'],
     repo: 'https://github.com/MRGN79/fobforge',
