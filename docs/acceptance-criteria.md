@@ -48,7 +48,7 @@ Para tener visibilidad rápida del estado de cada uno sin abrir cada repositorio
 - CA-1.2 — Dada una tarjeta de proyecto, cuando se renderiza, entonces muestra: nombre,
   descripción, versión, versión de scaffold, etiquetas de stack y enlaces a repositorio y demo.
 - CA-1.3 — Dado el título de la aplicación, cuando se renderiza la cabecera, entonces muestra
-  `app.title` ("DevDeck") y `app.subtitle` ("Your personal development project catalog").
+  `app.title` ("DevDeck") y `app.subtitle` ("Personal development project catalog").
 - CA-1.4 (accesibilidad) — Dado que el usuario solo usa teclado, cuando navega la página, entonces
   puede alcanzar y activar todos los controles interactivos (switch de idioma, enlaces activos de
   repo/demo) mediante Tab y Enter/Espacio, sin ratón.

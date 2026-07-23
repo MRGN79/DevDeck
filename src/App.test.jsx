@@ -32,7 +32,7 @@ describe('US-1 — Ver el catálogo', () => {
     renderWithI18n(<App />);
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('DevDeck');
     expect(
-      screen.getByText('Your personal development project catalog'),
+      screen.getByText('Personal development project catalog'),
     ).toBeInTheDocument();
   });
 
@@ -64,7 +64,7 @@ describe('US-5 — Cambio de idioma EN/ES', () => {
     );
     // cabecera y pie de página traducidos
     expect(
-      screen.getByText('Tu catálogo personal de proyectos de desarrollo'),
+      screen.getByText('Catálogo personal de proyectos de desarrollo'),
     ).toBeInTheDocument();
     expect(
       screen.getByText('Hecho con React + Vite. Las estadísticas de GitHub se actualizan solas.'),

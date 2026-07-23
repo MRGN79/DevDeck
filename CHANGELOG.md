@@ -31,6 +31,7 @@ y el proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Datos de FobForge actualizados a su estado real (versión `0.3.0` → `1.0.0`, descripción y stack ya no reflejaban el proyecto actual — ahora es una web tool, no una herramienta de escritorio; se añade `SQL.js` al stack)
 - Datos de todos los proyectos del catálogo revisados contra sus repositorios reales: versión de FobForge (`1.0.0` → `1.0.2`); versión (`1.4.0` → `1.1.0`), descripción y stack de Selfforge (ya no usa Supabase; ahora `Tailwind CSS`)
 - Datos del catálogo resincronizados contra los repositorios reales: `scaffoldVersion` de Selfforge (`1.12.0` → `1.16.0`); versión de TerceroDePrimaria (`0.3.0` → `0.4.0`); versión (`0.12.0` → `0.13.0`) y `scaffoldVersion` (`1.4.0` → `1.16.0`) de TrailStats
+- Subtítulo de la cabecera (`app.subtitle`) simplificado quitando el posesivo: "Tu catálogo personal..." → "Catálogo personal..." (EN: "Your personal..." → "Personal...")
 
 ### Fixed
 
