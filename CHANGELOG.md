@@ -23,6 +23,8 @@ y el proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - El enlace "Demo" apunta por defecto a la GitHub Pages del proyecto (`https://<owner>.github.io/<repo>/`, derivada de `repo`) cuando no se rellena `demo` a mano; un valor explícito en `demo` sigue teniendo prioridad
 - Identidad visual por tarjeta: franja superior y degradado de fondo con los colores reales de cada proyecto (extraídos de su CSS desplegado), ver `docs/decisions/ADR-003-identidad-visual-por-tarjeta.md`
 - Pie de página con la versión del manifiesto (`package.json`, un solo origen de verdad) y una descripción breve, en EN/ES
+- Identidad visual "consola/terminal" sobria: tipografía monoespaciada en versiones, stack, estadísticas de GitHub y pie de página; acento verde discreto (`--accent-console`) independiente del acento por tarjeta de cada proyecto; cursor de terminal parpadeante junto al título; barrido de escaneo sutil y muy lento de fondo; esquinas tipo HUD que aparecen en hover/foco sobre las tarjetas
+- Versión, versión de scaffold y estadísticas numéricas de GitHub (estrellas, commits, colaboradores, issues abiertas, tamaño del repo) cuentan animadamente desde 0 hasta su valor real al cargar la tarjeta (`useCountUp`, `VersionCounter`, `Counter`); respeta `prefers-reduced-motion` mostrando el valor final sin animar
 
 ### Changed
 

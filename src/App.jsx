@@ -16,7 +16,12 @@ export default function App({ projects = catalogProjects } = {}) {
     <div className="app">
       <header className="app-header">
         <div>
-          <h1>{t('app.title')}</h1>
+          <h1>
+            {t('app.title')}
+            <span className="terminal-cursor" aria-hidden="true">
+              _
+            </span>
+          </h1>
           <p className="app-header__subtitle">{t('app.subtitle')}</p>
         </div>
         <div className="locale-switcher" role="group" aria-label={t('app.languageLabel')}>

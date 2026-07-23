@@ -1,4 +1,6 @@
 import { useI18n } from '../i18n/useI18n.js';
+import { VersionCounter } from './VersionCounter.jsx';
+import { Counter } from './Counter.jsx';
 
 export function ProjectCard({ project }) {
   const { t } = useI18n();
@@ -15,11 +17,15 @@ export function ProjectCard({ project }) {
       <dl className="project-card__meta">
         <div>
           <dt>{t('card.version')}</dt>
-          <dd>{version}</dd>
+          <dd>
+            <VersionCounter value={version} />
+          </dd>
         </div>
         <div>
           <dt>{t('card.scaffold')}</dt>
-          <dd>{scaffoldVersion ?? t('card.notAvailable')}</dd>
+          <dd>
+            {scaffoldVersion ? <VersionCounter value={scaffoldVersion} /> : t('card.notAvailable')}
+          </dd>
         </div>
       </dl>
 
@@ -36,7 +42,9 @@ export function ProjectCard({ project }) {
           {typeof github.stars === 'number' && (
             <div>
               <dt>{t('github.stars')}</dt>
-              <dd>{github.stars}</dd>
+              <dd>
+                <Counter value={github.stars} />
+              </dd>
             </div>
           )}
           {github.language && (
@@ -48,19 +56,25 @@ export function ProjectCard({ project }) {
           {typeof github.commits === 'number' && (
             <div>
               <dt>{t('github.commits')}</dt>
-              <dd>{github.commits}</dd>
+              <dd>
+                <Counter value={github.commits} />
+              </dd>
             </div>
           )}
           {typeof github.contributors === 'number' && (
             <div>
               <dt>{t('github.contributors')}</dt>
-              <dd>{github.contributors}</dd>
+              <dd>
+                <Counter value={github.contributors} />
+              </dd>
             </div>
           )}
           {typeof github.openIssues === 'number' && (
             <div>
               <dt>{t('github.openIssues')}</dt>
-              <dd>{github.openIssues}</dd>
+              <dd>
+                <Counter value={github.openIssues} />
+              </dd>
             </div>
           )}
           {github.license && (
@@ -72,7 +86,9 @@ export function ProjectCard({ project }) {
           {typeof github.sizeKb === 'number' && (
             <div>
               <dt>{t('github.size')}</dt>
-              <dd>{github.sizeKb} KB</dd>
+              <dd>
+                <Counter value={github.sizeKb} /> KB
+              </dd>
             </div>
           )}
           {github.lastPushedAt && (

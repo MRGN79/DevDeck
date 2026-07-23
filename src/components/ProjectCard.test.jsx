@@ -114,7 +114,7 @@ describe('US-7 — Estadísticas de GitHub', () => {
     expect(screen.getByText('Open issues')).toBeInTheDocument();
     expect(screen.getByText('License')).toBeInTheDocument();
     expect(screen.getByText('MIT')).toBeInTheDocument();
-    expect(screen.getByText('512 KB')).toBeInTheDocument();
+    expect(screen.getByText('Repo size').closest('div')).toHaveTextContent('512 KB');
     expect(screen.getByText('2026-07-01')).toBeInTheDocument();
   });
 
