@@ -25,12 +25,12 @@ requiere activar Pages → Source: "GitHub Actions" una vez en Settings)
 
 | Feature | Agente(s) activo(s) | Estado | Rama |
 |---|---|---|---|
-| Datos reales de TerceroDePrimaria/TrailStats (versión, descripción, stack) | — | Mergeado en su mayoría; PR #6 (versión/stack) aún abierta | feat/github-live-stats |
-| Eliminar campo `status` (badge, filtro y estado vacío) | — | Implementado, testeado y verificado visualmente; pendiente de confirmación del usuario para abrir PR y mergear | chore/remove-status-field |
+| Resincronizar datos del catálogo contra los repos reales (versión, scaffoldVersion) | — | Implementado y testeado; pendiente de confirmación del usuario para abrir PR y mergear | claude/actualizar-info-proyectos-0n4g6z |
 
 Mergeadas ya en `main`: eliminación del modo público/privado, estadísticas de GitHub en vivo,
-orden alfabético, demo por defecto a GitHub Pages, identidad visual por tarjeta, pie de página
-(PRs #4 y #5).
+orden alfabético, demo por defecto a GitHub Pages, identidad visual por tarjeta, pie de página,
+datos reales de TerceroDePrimaria/TrailStats, eliminación del campo `status`, datos reales de
+FobForge y sincronización previa del catálogo completo (PRs #4 a #9).
 
 > Specs y criterios de aceptación: `docs/acceptance-criteria.md`.
 > ADR: `docs/decisions/ADR-001-stack-y-i18n.md`, `docs/decisions/ADR-002-datos-github-en-build.md`, `docs/decisions/ADR-003-identidad-visual-por-tarjeta.md`.
@@ -95,10 +95,11 @@ orden alfabético, demo por defecto a GitHub Pages, identidad visual por tarjeta
 - [x] ~~El "Demo" por defecto de FobForge es una suposición sin verificar~~ — resuelto: su propio
   `index.html` declara `<link rel="canonical" href="https://mrgn79.github.io/fobforge/">`, que
   coincide exactamente con el default calculado. Confirmado real, no una suposición.
-- [ ] El "Demo" por defecto (GitHub Pages derivada de `repo`) de TerceroDePrimaria y TrailStats
-  sigue sin verificar — aún no se sabe si el Pages de esos repos existe. Si da 404, corresponde
-  poner `demo` explícito (a `null` para volver al enlace deshabilitado, o a la URL real si está
-  en otro sitio) — decisión del usuario, no del agente.
+- [x] ~~El "Demo" por defecto (GitHub Pages derivada de `repo`) de TerceroDePrimaria y TrailStats
+  sigue sin verificar~~ — resuelto: ambos repos despliegan a GitHub Pages con el mismo `base`
+  (case-sensitive) que el default calculado. TrailStats lo confirma con su propio
+  `<link rel="canonical">` a `https://mrgn79.github.io/TrailStats/`; TerceroDePrimaria lo confirma
+  con `base: "/TerceroDePrimaria/"` en `vite.config` junto a su `deploy.yml` a Pages.
 - [ ] Sin `prefers-reduced-motion` para las transiciones de hover de las tarjetas — impacto: Bajo.
 - [ ] El tema visual por tarjeta (`ADR-003`) es manual: cualquier proyecto nuevo que se añada al
   catálogo cae al estilo neutro por defecto hasta que alguien revise su CSS real y le asigne un
