@@ -5,7 +5,7 @@ export const projects = [
     description:
       'Rastreador de hábitos con gamificación ligera: rachas, progreso y recompensas para construir mejores rutinas, día a día.',
     version: '1.1.0',
-    scaffoldVersion: '1.12.0',
+    scaffoldVersion: '1.16.0',
     stack: ['React', 'Vite', 'Tailwind CSS'],
     repo: 'https://github.com/MRGN79/SelfForge',
     demo: null,
@@ -35,7 +35,7 @@ export const projects = [
     id: 'terceroDePrimaria',
     name: 'TerceroDePrimaria',
     description: 'Actividades de repaso de verano para 3.º de Primaria.',
-    version: '0.3.0',
+    version: '0.4.0',
     scaffoldVersion: '1.15.0',
     stack: ['React', 'Vite', 'TypeScript'],
     repo: 'https://github.com/MRGN79/TerceroDePrimaria',
@@ -46,8 +46,8 @@ export const projects = [
     name: 'TrailStats',
     description:
       'Analítica premium de entrenamiento — gratis. Tus actividades nunca salen de tu navegador.',
-    version: '0.12.0',
-    scaffoldVersion: '1.4.0',
+    version: '0.13.0',
+    scaffoldVersion: '1.16.0',
     stack: ['React', 'Vite', 'TypeScript', 'Recharts'],
     repo: 'https://github.com/MRGN79/TrailStats',
     demo: null,
