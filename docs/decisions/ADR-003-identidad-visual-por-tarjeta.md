@@ -33,6 +33,7 @@ Esto preserva la consistencia y el contraste del catálogo como conjunto.
 
 | Proyecto | Fuente | Acento | Nota |
 |---|---|---|---|
+| ArcCraft | `css/styles.css` | `#ff8a2a` (naranja) | Carbón casi negro + naranja "chispa de arco" — calculadoras de soldadura |
 | DevDeck | `src/App.css` (este mismo repo) | `#7c9eff` (azul, ya existente) | Es la app; usa su propio tema tal cual |
 | FobForge | `css/main.css` | `#00d4a0` (menta/teal) | Negro casi puro + acento técnico, RFID/domótica |
 | Selfforge | `src/index.css` (Tailwind `@theme`) | `#f97316` (naranja, su propio focus-ring) | Paleta "forja": óxido/ascua sobre carbón — el nombre lo dice literalmente |

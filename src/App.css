@@ -224,6 +224,13 @@ body::after {
  * Proyecto sin bloque propio → fallback neutro de arriba, sin mantenimiento.
  */
 
+.project-card[data-project="arccraft"] {
+  /* ArcCraft: carbón casi negro + naranja chispa de arco (soldadura) */
+  --card-accent: #ff8a2a;
+  --card-glow: radial-gradient(ellipse 70% 55% at 100% 0%, rgba(255, 138, 42, 0.2) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 0% 100%, rgba(255, 161, 77, 0.12) 0%, transparent 55%);
+}
+
 .project-card[data-project="devdeck"] {
   --card-accent: var(--accent);
   --card-glow: radial-gradient(ellipse 80% 60% at 100% 0%, var(--accent-soft) 0%, transparent 65%);
