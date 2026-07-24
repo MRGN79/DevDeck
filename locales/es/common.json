@@ -1,7 +1,7 @@
 {
   "app": {
     "title": "DevDeck",
-    "subtitle": "Tu catálogo personal de proyectos de desarrollo",
+    "subtitle": "Catálogo personal de proyectos de desarrollo",
     "languageLabel": "Idioma",
     "footerDescription": "Hecho con React + Vite. Las estadísticas de GitHub se actualizan solas."
   },

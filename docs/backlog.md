@@ -26,6 +26,7 @@ requiere activar Pages → Source: "GitHub Actions" una vez en Settings)
 | Feature | Agente(s) activo(s) | Estado | Rama |
 |---|---|---|---|
 | Resincronizar datos del catálogo contra los repos reales (versión, scaffoldVersion) | — | Implementado y testeado; pendiente de confirmación del usuario para abrir PR y mergear | claude/actualizar-info-proyectos-0n4g6z |
+| Identidad visual "consola/terminal" sobria (tipografía monoespaciada, acento verde discreto, barrido de escaneo, esquinas HUD en hover) + versión/scaffold/estadísticas de GitHub numéricas con conteo animado al montar | — | Implementado y testeado; pendiente de confirmación del usuario para abrir PR y mergear | claude/actualizar-info-proyectos-0n4g6z |
 
 Mergeadas ya en `main`: eliminación del modo público/privado, estadísticas de GitHub en vivo,
 orden alfabético, demo por defecto a GitHub Pages, identidad visual por tarjeta, pie de página,
@@ -100,7 +101,11 @@ FobForge y sincronización previa del catálogo completo (PRs #4 a #9).
   (case-sensitive) que el default calculado. TrailStats lo confirma con su propio
   `<link rel="canonical">` a `https://mrgn79.github.io/TrailStats/`; TerceroDePrimaria lo confirma
   con `base: "/TerceroDePrimaria/"` en `vite.config` junto a su `deploy.yml` a Pages.
-- [ ] Sin `prefers-reduced-motion` para las transiciones de hover de las tarjetas — impacto: Bajo.
+- [x] ~~Sin `prefers-reduced-motion` para las transiciones de hover de las tarjetas~~ — resuelto: al
+  añadir animaciones nuevas (cursor de terminal, barrido de escaneo, conteo de versiones y
+  estadísticas), se añadió un reset global en `App.css` que reduce toda animación/transición a
+  0.01ms cuando el sistema pide movimiento reducido. Cubre también el conteo animado, que además
+  se salta por completo (muestra el valor final directamente) en vez de solo acortarse.
 - [ ] El tema visual por tarjeta (`ADR-003`) es manual: cualquier proyecto nuevo que se añada al
   catálogo cae al estilo neutro por defecto hasta que alguien revise su CSS real y le asigne un
   bloque `[data-project="..."]` en `src/App.css`. No es un bug, es el trade-off aceptado de esta
