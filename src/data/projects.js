@@ -1,5 +1,16 @@
 export const projects = [
   {
+    id: 'arccraft',
+    name: 'ArcCraft',
+    description:
+      'Calculadoras y guías de consulta rápida para soldadura MMA, MIG/MAG y TIG: parámetros, energía aportada, sección de cable y protección ocular, 100% en el navegador.',
+    version: '0.1.0',
+    scaffoldVersion: '1.16.0',
+    stack: ['HTML', 'CSS', 'JavaScript'],
+    repo: 'https://github.com/MRGN79/ArcCraft',
+    demo: null,
+  },
+  {
     id: 'selfforge',
     name: 'Selfforge',
     description:
